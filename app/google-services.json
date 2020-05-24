@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "76428070022",
+    "firebase_url": "https://myseoultravel-9989f.firebaseio.com",
+    "project_id": "myseoultravel-9989f",
+    "storage_bucket": "myseoultravel-9989f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76428070022:android:e94997c06632e124d95507",
+        "android_client_info": {
+          "package_name": "com.myseoultravel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "76428070022-h4o6lu1a6b1gu1h666gltd93ki4chetq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.myseoultravel",
+            "certificate_hash": "6ea56cbee33c2ce17fb2c2a6d5b74d48c86ffc92"
+          }
+        },
+        {
+          "client_id": "76428070022-u23gtjcqqssslk6ebvmnvh216qifse0s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChTPWSLD1dK4-pG4v9_zgTAg9mdzeShZM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "76428070022-u23gtjcqqssslk6ebvmnvh216qifse0s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

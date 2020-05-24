@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_making">
+
+<!--    <fragment-->
+<!--        android:id="@+id/navigation_home"-->
+<!--        android:name="com.myseoultravel.ui.home.HomeFragment"-->
+<!--        android:label="@string/title_home"-->
+<!--        tools:layout="@layout/fragment_home" />-->
+
+    <fragment
+        android:id="@+id/navigation_making"
+        android:name="com.myseoultravel.ui.making.MakingFragment"
+        android:label="My Cource"
+        tools:layout="@layout/fragment_making" />
+
+    <fragment
+        android:id="@+id/navigation_viewing"
+        android:name="com.myseoultravel.ui.viewing.ViewingFragment"
+        android:label="@string/title_viewing"
+        tools:layout="@layout/fragment_viewing" />
+</navigation>
