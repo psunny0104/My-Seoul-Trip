@@ -1,6 +1,7 @@
 package com.myseoultravel.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.myseoultravel.R;
+import com.myseoultravel.SearchDetailActivity;
 import com.myseoultravel.adapter.SearchNearbyPlaceItem;
 import com.myseoultravel.adapter.SearchNearbyPlaceItemAdapter;
 import com.myseoultravel.model.place.nearby.NearbyPlaceItem;
@@ -47,7 +49,8 @@ public class ShoppingFragment extends Fragment {
         Context context = view.getContext();
         googlePlaceClient = GooglePlaceClient.getInstance(context).createBaseApi();
 
-        googlePlaceClient.getNearbyPlace(GooglePlaceService.KEY, "store", GooglePlaceService.RADIUS, "37.560892, 126.986168",GooglePlaceService.LANGUAGE, new GoogleCallback() {
+        String coords = getActivity().getIntent().getStringExtra("coords");
+        googlePlaceClient.getNearbyPlace(GooglePlaceService.KEY, "department_store", GooglePlaceService.RADIUS, coords ,GooglePlaceService.LANGUAGE, new GoogleCallback() {
             @Override
             public void onError(Throwable t) {
                 Log.e("myTag", t.toString());
@@ -67,12 +70,23 @@ public class ShoppingFragment extends Fragment {
                     catch (Exception e){
                         e.printStackTrace();
                     }
-                    String photo = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+PHOTOREF+"&key="+GooglePlaceService.KEY;
+                    String photo = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1600&photoreference="+PHOTOREF+"&key="+GooglePlaceService.KEY;
                     searchNearbyPlaceItems.add(new SearchNearbyPlaceItem(engName,photo));
                     Log.i("myTag", i+"번째 이름: "+engName);
                 }
                 SearchNearbyPlaceItemAdapter adapter = new SearchNearbyPlaceItemAdapter(context, searchNearbyPlaceItems);
                 recyclerView.setAdapter(adapter);
+
+                adapter.setOnItemClickListener(new SearchNearbyPlaceItemAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int position) {
+                        // TODO : 아이템 클릭 이벤트를 MainActivity에서 처리.
+                        Intent intent = new Intent(getContext(), SearchDetailActivity.class);
+                        intent.putExtra("place_id", nearbyPlaceItem.getResults().get(position).getPlaceId());
+                        Log.i("myTag", nearbyPlaceItem.getResults().get(position).getPlaceId());
+                        startActivity(intent);
+                    }
+                }) ;
             }
 
             @Override

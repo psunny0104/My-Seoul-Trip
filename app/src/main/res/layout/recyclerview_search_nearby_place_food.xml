@@ -8,11 +8,11 @@
     <!--이미지-->
     <ImageView
         android:id="@+id/food_item_imageView"
-        android:layout_width="421dp"
-        android:layout_height="139dp"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
         android:layout_gravity="center_horizontal"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter" />
+        android:scaleType="fitXY" />
 
     <!--구분선-->
 

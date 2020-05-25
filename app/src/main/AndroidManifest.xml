@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.myseoultravel"
-    xmlns:dist="http://schemas.android.com/apk/distribution">
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    package="com.myseoultravel">
 
     <dist:module dist:instant="true" />
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SearchNearbyPlaceActivity"></activity>
+        <activity android:name=".SearchDetailActivity"></activity>
+        <activity android:name=".SearchNearbyPlaceActivity" />
         <activity android:name=".SelectActivity" />
         <activity
             android:name=".BottomNavActivity"
