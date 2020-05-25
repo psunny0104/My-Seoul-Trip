@@ -20,6 +20,7 @@ public class SearchNearbyPlaceItemAdapter extends RecyclerView.Adapter<SearchNea
     private ArrayList<SearchNearbyPlaceItem> mPersons;
     private LayoutInflater mInflate;
     private Context mContext;
+    private OnItemClickListener mListener = null ;
 
     public SearchNearbyPlaceItemAdapter(Context context, ArrayList<SearchNearbyPlaceItem> persons) {
         this.mContext = context;
@@ -30,7 +31,7 @@ public class SearchNearbyPlaceItemAdapter extends RecyclerView.Adapter<SearchNea
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mInflate.inflate(R.layout.recyclerview_search_nearby_place_food, parent, false);
+        View view = mInflate.inflate(R.layout.recyclerview_search_nearby_place_shopping, parent, false);
         MyViewHolder viewHolder = new MyViewHolder(view);
         return viewHolder;
     }
@@ -65,15 +66,36 @@ public class SearchNearbyPlaceItemAdapter extends RecyclerView.Adapter<SearchNea
 
 
     //ViewHolder
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView engName;
         public ImageView imageView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            engName = (TextView) itemView.findViewById(R.id.food_item_eng_name);
-            imageView = (ImageView) itemView.findViewById(R.id.food_item_imageView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition() ;
+                    if (pos != RecyclerView.NO_POSITION) {
+                        // 리스너 객체의 메서드 호출.
+                        if (mListener != null) {
+                            mListener.onItemClick(v, pos) ;
+                        }
+                    }
+                }
+            });
+
+            engName = (TextView) itemView.findViewById(R.id.shopping_item_eng_name);
+            imageView = (ImageView) itemView.findViewById(R.id.shopping_item_imageView);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View v, int position) ;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mListener = listener ;
     }
 }

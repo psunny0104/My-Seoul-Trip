@@ -5,16 +5,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
-import com.myseoultravel.adapter.SearchNearbyPlaceAdapter;
-import com.myseoultravel.fragment.FoodFragment;
-import com.myseoultravel.service.GoogleCallback;
-import com.myseoultravel.service.GooglePlaceClient;
-import com.myseoultravel.service.GooglePlaceService;
+import com.myseoultravel.adapter.SearchNearbyPlaceItemAdapter;
+import com.myseoultravel.adapter.SearchNearbyPlaceTabAdapter;
 
 public class SearchNearbyPlaceActivity extends AppCompatActivity {
 
@@ -29,17 +23,13 @@ public class SearchNearbyPlaceActivity extends AppCompatActivity {
         TabLayout tabs = (TabLayout) findViewById(R.id.tabLayout);
         tabs.setTabGravity(tabs.GRAVITY_FILL);
 
-        //어댑터 설정정
+        //어댑터 설정
         final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        final SearchNearbyPlaceAdapter searchNearbyPlaceAdapter = new SearchNearbyPlaceAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(searchNearbyPlaceAdapter);
+        final SearchNearbyPlaceTabAdapter searchNearbyPlaceTabAdapter = new SearchNearbyPlaceTabAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(searchNearbyPlaceTabAdapter);
 
         //
         tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
-
-        Intent intent = getIntent();
-//        Log.i("myLog", intent.getStringExtra("name").toString());
-
     }
 }

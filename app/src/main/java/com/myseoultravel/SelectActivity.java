@@ -27,7 +27,6 @@ public class SelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select);
 
-
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -41,6 +40,23 @@ public class SelectActivity extends AppCompatActivity {
                 System.out.println(position);
                 Intent intent = new Intent(getApplicationContext(), SearchNearbyPlaceActivity.class);
                 intent.putExtra("name", areaItem.getAreaTitle());
+                //postion에 따른 좌표 분기
+                if(position == 0){
+                    intent.putExtra("coords", "37.560892, 126.986168");
+                }
+                else if(position == 1){
+                    intent.putExtra("coords", "37.564687, 127.004912");
+                }
+                else if(position == 2){
+                    intent.putExtra("coords", "37.555247, 126.936692");
+                }
+                else if(position == 3){
+                    intent.putExtra("coords", "37.497900, 127.027547");
+                }
+                else if(position == 4){
+                    intent.putExtra("coords", "37.534594, 126.994220");
+                }
+
                 startActivity(intent);
             }
 

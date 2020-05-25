@@ -3,6 +3,7 @@ package com.myseoultravel.service;
 import android.content.Context;
 import android.util.Log;
 
+import com.myseoultravel.model.place.detail.DetailItem;
 import com.myseoultravel.model.place.nearby.NearbyPlaceItem;
 
 import java.io.IOException;
@@ -65,6 +66,27 @@ public class GooglePlaceClient {
 
             @Override
             public void onFailure(Call<NearbyPlaceItem> call, Throwable t) {
+                Log.i("myTag", "responseFailure"+call.request().url());
+                callback.onError(t);
+            }
+        });
+    }
+
+    public void getDetailPlace(String key, String placeId, final GoogleCallback callback){
+        googlePlaceService.getDetailPlace(key,placeId).enqueue(new Callback<DetailItem>() {
+            @Override
+            public void onResponse(Call<DetailItem> call, Response<DetailItem> response) {
+                if (response.isSuccessful()) {
+                    Log.i("myTag", "responseSuccess"+call.request().url());
+                    callback.onSuccess(response.code(), response.body()); }
+                else {
+                    Log.i("myTag", "responseFailure"+call.request().url());
+                    callback.onFailure(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DetailItem> call, Throwable t) {
                 Log.i("myTag", "responseFailure"+call.request().url());
                 callback.onError(t);
             }
