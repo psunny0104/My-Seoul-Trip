@@ -15,14 +15,14 @@ import com.myseoultravel.R;
 
 import java.util.ArrayList;
 
-public class SearchNearbyPlaceShoppingAdapter extends RecyclerView.Adapter<SearchNearbyPlaceShoppingAdapter.MyViewHolder> {
+public class SearchNearbyPlaceItemAdapter extends RecyclerView.Adapter<SearchNearbyPlaceItemAdapter.MyViewHolder> {
 
     private ArrayList<SearchNearbyPlaceItem> mPersons;
     private LayoutInflater mInflate;
     private Context mContext;
     private OnItemClickListener mListener = null ;
 
-    public SearchNearbyPlaceShoppingAdapter(Context context, ArrayList<SearchNearbyPlaceItem> persons) {
+    public SearchNearbyPlaceItemAdapter(Context context, ArrayList<SearchNearbyPlaceItem> persons) {
         this.mContext = context;
         this.mInflate = LayoutInflater.from(context);
         this.mPersons = persons;
