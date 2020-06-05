@@ -2,14 +2,11 @@ package com.myseoultravel;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -20,15 +17,12 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.myseoultravel.ui.home.HomeFragment;
-import com.myseoultravel.ui.making.MakingFragment;
-import com.myseoultravel.ui.viewing.ViewingFragment;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         //로그인 된 경우 다시 로그인 할지
         if (mAuth.getCurrentUser() != null) {
-            Intent intent = new Intent(getApplication(), BottomNavActivity.class);
+            Intent intent = new Intent(getApplication(), HomeActivity.class);
             startActivity(intent);
             finish();
         }
@@ -119,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) { //update ui code here
         if (user != null) {
-            Intent intent = new Intent(this, BottomNavActivity.class);
+            Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
             finish();
         }

@@ -6,7 +6,7 @@ import android.util.Log;
 import com.myseoultravel.model.place.detail.DetailItem;
 import com.myseoultravel.model.place.nearby.NearbyPlaceItem;
 
-import java.io.IOException;
+import org.json.JSONException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,13 +51,18 @@ public class GooglePlaceClient {
         return retrofit.create(service);
     }
 
-    public void getNearbyPlace(String key, String type, int radius, String location, String language, final GoogleCallback callback){
+    public void getNearbyPlace(String key, String type, int radius, String location, String language, final ApiCallback callback){
         googlePlaceService.getSearchNearbyPlace(key,type,radius,location,language).enqueue(new Callback<NearbyPlaceItem>() {
             @Override
             public void onResponse(Call<NearbyPlaceItem> call, Response<NearbyPlaceItem> response) {
                 if (response.isSuccessful()) {
                     Log.i("myTag", "responseSuccess"+call.request().url());
-                    callback.onSuccess(response.code(), response.body()); }
+                    try {
+                        callback.onSuccess(response.code(), response.body());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
                 else {
                     Log.i("myTag", "responseFailure"+call.request().url());
                     callback.onFailure(response.code());
@@ -72,13 +77,18 @@ public class GooglePlaceClient {
         });
     }
 
-    public void getDetailPlace(String key, String placeId, final GoogleCallback callback){
+    public void getDetailPlace(String key, String placeId, final ApiCallback callback){
         googlePlaceService.getDetailPlace(key,placeId).enqueue(new Callback<DetailItem>() {
             @Override
             public void onResponse(Call<DetailItem> call, Response<DetailItem> response) {
                 if (response.isSuccessful()) {
                     Log.i("myTag", "responseSuccess"+call.request().url());
-                    callback.onSuccess(response.code(), response.body()); }
+                    try {
+                        callback.onSuccess(response.code(), response.body());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
                 else {
                     Log.i("myTag", "responseFailure"+call.request().url());
                     callback.onFailure(response.code());

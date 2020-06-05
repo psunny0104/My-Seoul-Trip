@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
-import com.myseoultravel.adapter.SearchNearbyPlaceItemAdapter;
 import com.myseoultravel.adapter.SearchNearbyPlaceTabAdapter;
 
 public class SearchNearbyPlaceActivity extends AppCompatActivity {

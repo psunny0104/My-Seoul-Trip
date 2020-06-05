@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -17,10 +17,12 @@ import com.myseoultravel.R;
 import com.myseoultravel.SearchDetailActivity;
 import com.myseoultravel.adapter.SearchNearbyPlaceItem;
 import com.myseoultravel.adapter.SearchNearbyPlaceItemAdapter;
-import com.myseoultravel.model.place.nearby.NearbyPlaceItem;
-import com.myseoultravel.service.GoogleCallback;
-import com.myseoultravel.service.GooglePlaceClient;
-import com.myseoultravel.service.GooglePlaceService;
+import com.myseoultravel.model.place.tour.LocalListModelItems;
+import com.myseoultravel.service.ApiCallback;
+import com.myseoultravel.service.TourApiClient;
+import com.myseoultravel.service.TourApiService;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -44,33 +46,33 @@ public class ShoppingFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
 
         ArrayList<SearchNearbyPlaceItem> searchNearbyPlaceItems = new ArrayList<>();
-        GooglePlaceClient googlePlaceClient;
+        TourApiClient tourApiClient;
         searchNearbyPlaceItems.clear();
         Context context = view.getContext();
-        googlePlaceClient = GooglePlaceClient.getInstance(context).createBaseApi();
+        tourApiClient = TourApiClient.getInstance(context).createBaseApi();
 
-        String coords = getActivity().getIntent().getStringExtra("coords");
-        googlePlaceClient.getNearbyPlace(GooglePlaceService.KEY, "department_store", GooglePlaceService.RADIUS, coords ,GooglePlaceService.LANGUAGE, new GoogleCallback() {
+        double mapX = getActivity().getIntent().getDoubleExtra("mapX",0.0);
+        double mapY = getActivity().getIntent().getDoubleExtra("mapY",0.0);
+        tourApiClient.getLocationList(TourApiService.SERVICE_KEY, TourApiService.MOBILE_OS, TourApiService.MOBILE_App, TourApiService.MY_TYPE, 30, 1, "P", 79, mapX, mapY, 4000, new ApiCallback<LocalListModelItems>() {
             @Override
             public void onError(Throwable t) {
                 Log.e("myTag", t.toString());
             }
 
             @Override
-            public void onSuccess(int code, Object receivedData) {
-                NearbyPlaceItem nearbyPlaceItem = (NearbyPlaceItem) receivedData;
+            public void onSuccess(int code, LocalListModelItems receivedData) throws JSONException {
+                LocalListModelItems localList = (LocalListModelItems) receivedData;
 
-                Log.i("myTag", "개수: "+nearbyPlaceItem.getResults().size());
-                for(int i = 0; i<nearbyPlaceItem.getResults().size(); i++){
-                    String engName = nearbyPlaceItem.getResults().get(i).getName();
-                    String PHOTOREF = "";
-                    try{
-                        PHOTOREF = nearbyPlaceItem.getResults().get(i).getPhotos().get(0).getPhotoReference().toString();
-                    }
-                    catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    String photo = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1600&photoreference="+PHOTOREF+"&key="+GooglePlaceService.KEY;
+                int size;
+                if(localList.getResponse().getBody().getTotalCount() < 30)
+                    size = localList.getResponse().getBody().getTotalCount();
+                else
+                    size = 30;
+                Log.i("myTag", "개수: "+size);
+
+                for(int i = 0; i<size; i++){
+                    String engName = localList.getResponse().getBody().getItems().getItem().get(i).getTitle();
+                    String photo = localList.getResponse().getBody().getItems().getItem().get(i).getFirstimage();
                     searchNearbyPlaceItems.add(new SearchNearbyPlaceItem(engName,photo));
                     Log.i("myTag", i+"번째 이름: "+engName);
                 }
@@ -82,8 +84,10 @@ public class ShoppingFragment extends Fragment {
                     public void onItemClick(View v, int position) {
                         // TODO : 아이템 클릭 이벤트를 MainActivity에서 처리.
                         Intent intent = new Intent(getContext(), SearchDetailActivity.class);
-                        intent.putExtra("place_id", nearbyPlaceItem.getResults().get(position).getPlaceId());
-                        Log.i("myTag", nearbyPlaceItem.getResults().get(position).getPlaceId());
+                        intent.putExtra("contentId", localList.getResponse().getBody().getItems().getItem().get(position).getContentid());
+                        intent.putExtra("contentTypeId", localList.getResponse().getBody().getItems().getItem().get(position).getContenttypeid());
+                        intent.putExtra("api","tour");
+                        Log.i("myTag", localList.getResponse().getBody().getItems().getItem().get(position).toContetIdString());
                         startActivity(intent);
                     }
                 }) ;
@@ -95,11 +99,8 @@ public class ShoppingFragment extends Fragment {
             }
         });
 
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2);
+        recyclerView.setLayoutManager(gridLayoutManager);
 
         Log.i("myTag","debug2: "+searchNearbyPlaceItems.size());
 

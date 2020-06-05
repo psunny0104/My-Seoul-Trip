@@ -1,7 +1,7 @@
 package com.myseoultravel;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -11,17 +11,17 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.myseoultravel.adapter.AreaAdapter;
-import com.myseoultravel.adapter.AreaData;
-import com.myseoultravel.adapter.AreaItem;
+import com.myseoultravel.adapter.SelectAreaAdapter;
+import com.myseoultravel.adapter.SelectAreaData;
+import com.myseoultravel.adapter.SelectAreaItem;
 
 import java.util.ArrayList;
 
-public class SelectActivity extends AppCompatActivity {
+public class SelectAreaActivity extends AppCompatActivity {
 
-    AreaAdapter adapter = new AreaAdapter();
+    SelectAreaAdapter adapter = new SelectAreaAdapter();
     RecyclerView recyclerView;
-    ArrayList arrayList = new AreaData().getItems();
+    ArrayList arrayList = new SelectAreaData().getItems();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,32 +29,42 @@ public class SelectActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         recyclerView.setAdapter(adapter);
         adapter.setItems(arrayList);
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                AreaItem areaItem = (AreaItem) arrayList.get(position);
+                SelectAreaItem selectAreaItem = (SelectAreaItem) arrayList.get(position);
                 System.out.println(position);
                 Intent intent = new Intent(getApplicationContext(), SearchNearbyPlaceActivity.class);
-                intent.putExtra("name", areaItem.getAreaTitle());
+                intent.putExtra("name", selectAreaItem.getAreaTitle());
                 //postion에 따른 좌표 분기
                 if(position == 0){
                     intent.putExtra("coords", "37.560892, 126.986168");
+                    intent.putExtra("mapX", 126.986168);
+                    intent.putExtra("mapY", 37.560892);
                 }
                 else if(position == 1){
                     intent.putExtra("coords", "37.564687, 127.004912");
+                    intent.putExtra("mapX", 127.004912);
+                    intent.putExtra("mapY", 37.564687);
                 }
                 else if(position == 2){
                     intent.putExtra("coords", "37.555247, 126.936692");
+                    intent.putExtra("mapX", 126.936692);
+                    intent.putExtra("mapY", 37.555247);
                 }
                 else if(position == 3){
                     intent.putExtra("coords", "37.497900, 127.027547");
+                    intent.putExtra("mapX", 127.027547);
+                    intent.putExtra("mapY", 37.497900);
                 }
                 else if(position == 4){
                     intent.putExtra("coords", "37.534594, 126.994220");
+                    intent.putExtra("mapX", 126.994220);
+                    intent.putExtra("mapY", 37.534594);
                 }
 
                 startActivity(intent);
@@ -76,9 +86,9 @@ public class SelectActivity extends AppCompatActivity {
     public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         private GestureDetector gestureDetector;
-        private SelectActivity.ClickListener clickListener;
+        private SelectAreaActivity.ClickListener clickListener;
 
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final SelectActivity.ClickListener clickListener) {
+        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final SelectAreaActivity.ClickListener clickListener) {
             this.clickListener = clickListener;
             gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
                 @Override

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#941e34</color>
+    <color name="colorPrimaryDark">#941e34</color>
+    <color name="colorAccent">#6789ca</color>
+
+    <color name="seoulRed">#941e34</color>
+    <color name="seoulSilver">#dfdfdd</color>
+    <color name="seoulBrown">#bc6f25</color>
+    <color name="seoulSky">#6789ca</color>
+    <color name="seoulGreen">#455f54</color>
+    <color name="seoulGray">#a4a199</color>
+    <color name="seoulYellow">#e5b560</color>
 </resources>
