@@ -10,13 +10,13 @@ import com.myseoultravel.fragment.ExperienceFragment;
 import com.myseoultravel.fragment.FoodFragment;
 import com.myseoultravel.fragment.ShoppingFragment;
 
-public class SearchNearbyPlaceTabAdapter extends androidx.fragment.app.FragmentPagerAdapter {
+public class SearchNearbyTabAdapter extends androidx.fragment.app.FragmentPagerAdapter {
 
     final int PAGE_COUNT = 4;
     private String tabTitles[] = new String[] {"SHOPPING", "FOOD", "CULTURE", "EXPERIENCE"};
 
     int mNumOfTabs;
-    public SearchNearbyPlaceTabAdapter(@NonNull FragmentManager fm) {
+    public SearchNearbyTabAdapter(@NonNull FragmentManager fm) {
         super(fm);
         this.mNumOfTabs = PAGE_COUNT;
     }

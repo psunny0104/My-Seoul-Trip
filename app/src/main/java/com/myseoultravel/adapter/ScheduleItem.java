@@ -1,6 +1,7 @@
 package com.myseoultravel.adapter;
 
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -8,12 +9,21 @@ import java.util.Calendar;
 public class ScheduleItem implements Serializable {
     private String scheduleDayIdx;
     private String scheduleDate;
-    //private Button scheduleAdd;
+    private String scheduleSt;
+    private String scheduleDst;
 
     public ScheduleItem(String scheduleDayIdx, String scheduleDate) {
         this.scheduleDayIdx = scheduleDayIdx;
         this.scheduleDate = scheduleDate;
-        //this.scheduleAdd = scheduleAdd;
+        this.scheduleSt = "";
+        this.scheduleDst = "";
+    }
+
+    public ScheduleItem(String scheduleDayIdx, String scheduleDate, String scheduleSt, String scheduleDst) {
+        this.scheduleDayIdx = scheduleDayIdx;
+        this.scheduleDate = scheduleDate;
+        this.scheduleSt = scheduleSt;
+        this.scheduleDst = scheduleDst;
     }
 
     public String getScheduleDayIdx() {
@@ -32,4 +42,19 @@ public class ScheduleItem implements Serializable {
         this.scheduleDate = scheduleDate;
     }
 
+    public String getScheduleSt() {
+        return scheduleSt;
+    }
+
+    public void setScheduleSt(String scheduleSt) {
+        this.scheduleSt = scheduleSt;
+    }
+
+    public String getScheduleDst() {
+        return scheduleDst;
+    }
+
+    public void setScheduleDst(String scheduleDst) {
+        this.scheduleDst = scheduleDst;
+    }
 }

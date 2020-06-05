@@ -1,11 +1,11 @@
 package com.myseoultravel.adapter;
 
-public class SearchNearbyPlaceItem {
+public class SearchNearbyItem {
     String engName;
     String korName;
     String photo;
 
-    public SearchNearbyPlaceItem(String engName, String photo){
+    public SearchNearbyItem(String engName, String photo){
         this.engName = engName;
         this.photo = photo;
     }
