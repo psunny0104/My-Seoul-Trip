@@ -13,8 +13,8 @@ import com.myseoultravel.R;
 
 import java.util.ArrayList;
 
-public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
-    private ArrayList<AreaItem> items = new ArrayList<>();
+public class SelectAreaAdapter extends RecyclerView.Adapter<SelectAreaAdapter.ViewHolder> {
+    private ArrayList<SelectAreaItem> items = new ArrayList<>();
 
     @NonNull
     @Override
@@ -25,8 +25,8 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(AreaAdapter.ViewHolder viewHolder, int position) {
-        AreaItem item = items.get(position);
+    public void onBindViewHolder(SelectAreaAdapter.ViewHolder viewHolder, int position) {
+        SelectAreaItem item = items.get(position);
 
         viewHolder.imageButton.setImageResource(item.getAreaImage());
         viewHolder.textView.setText(item.getAreaTitle());
@@ -36,11 +36,11 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.ViewHolder> {
     public int getItemCount() {
         return items.size();
     }
-    public void setItems(ArrayList<AreaItem> items){
+    public void setItems(ArrayList<SelectAreaItem> items){
         this.items = items;
     }
 
-    public ArrayList<AreaItem> getItems() {
+    public ArrayList<SelectAreaItem> getItems() {
         return items;
     }
 

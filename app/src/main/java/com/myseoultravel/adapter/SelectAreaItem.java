@@ -1,6 +1,6 @@
 package com.myseoultravel.adapter;
 
-public class AreaItem {
+public class SelectAreaItem {
     int areaImage; String areaTitle;
 
     public int getAreaImage() { return areaImage; }
@@ -15,7 +15,7 @@ public class AreaItem {
         this.areaTitle = areaTitle;
     }
 
-    public AreaItem(int areaImage, String areaTitle)
+    public SelectAreaItem(int areaImage, String areaTitle)
     {
         this.areaImage = areaImage;
         this.areaTitle = areaTitle;
