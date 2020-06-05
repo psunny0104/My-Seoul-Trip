@@ -38,7 +38,7 @@ public class SelectAreaActivity extends AppCompatActivity {
             public void onClick(View view, int position) {
                 SelectAreaItem selectAreaItem = (SelectAreaItem) arrayList.get(position);
                 System.out.println(position);
-                Intent intent = new Intent(getApplicationContext(), SearchNearbyPlaceActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SearchNearbyActivity.class);
                 intent.putExtra("name", selectAreaItem.getAreaTitle());
                 //postion에 따른 좌표 분기
                 if(position == 0){

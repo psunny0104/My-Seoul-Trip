@@ -15,8 +15,8 @@ import android.view.ViewGroup;
 
 import com.myseoultravel.R;
 import com.myseoultravel.SearchDetailActivity;
-import com.myseoultravel.adapter.SearchNearbyPlaceItem;
-import com.myseoultravel.adapter.SearchNearbyPlaceItemAdapter;
+import com.myseoultravel.adapter.SearchNearbyItem;
+import com.myseoultravel.adapter.SearchNearbyItemAdapter;
 import com.myseoultravel.model.place.tour.LocalListModelItems;
 import com.myseoultravel.service.ApiCallback;
 import com.myseoultravel.service.TourApiClient;
@@ -45,9 +45,9 @@ public class FoodFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.search_nearby_place_food_recycler_view);
         recyclerView.setHasFixedSize(true);
 
-        ArrayList<SearchNearbyPlaceItem> searchNearbyPlaceItems = new ArrayList<>();
+        ArrayList<SearchNearbyItem> searchNearbyItems = new ArrayList<>();
         TourApiClient tourApiClient;
-        searchNearbyPlaceItems.clear();
+        searchNearbyItems.clear();
         Context context = view.getContext();
         tourApiClient = TourApiClient.getInstance(context).createBaseApi();
 
@@ -73,13 +73,13 @@ public class FoodFragment extends Fragment {
                 for(int i = 0; i<size; i++){
                     String engName = localList.getResponse().getBody().getItems().getItem().get(i).getTitle();
                     String photo = localList.getResponse().getBody().getItems().getItem().get(i).getFirstimage();
-                    searchNearbyPlaceItems.add(new SearchNearbyPlaceItem(engName,photo));
+                    searchNearbyItems.add(new SearchNearbyItem(engName,photo));
                     Log.i("myTag", i+"번째 이름: "+engName);
                 }
-                SearchNearbyPlaceItemAdapter adapter = new SearchNearbyPlaceItemAdapter(context, searchNearbyPlaceItems);
+                SearchNearbyItemAdapter adapter = new SearchNearbyItemAdapter(context, searchNearbyItems);
                 recyclerView.setAdapter(adapter);
 
-                adapter.setOnItemClickListener(new SearchNearbyPlaceItemAdapter.OnItemClickListener() {
+                adapter.setOnItemClickListener(new SearchNearbyItemAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
                         // TODO : 아이템 클릭 이벤트를 MainActivity에서 처리.
@@ -102,7 +102,7 @@ public class FoodFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        Log.i("myTag","debug2: "+searchNearbyPlaceItems.size());
+        Log.i("myTag","debug2: "+ searchNearbyItems.size());
 
         return view;
     }

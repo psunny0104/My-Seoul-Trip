@@ -1,7 +1,8 @@
 package com.myseoultravel.adapter;
 
 public class SelectAreaItem {
-    int areaImage; String areaTitle;
+    int areaImage;
+    String areaTitle;
 
     public int getAreaImage() { return areaImage; }
 

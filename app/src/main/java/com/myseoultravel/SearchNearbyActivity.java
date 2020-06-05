@@ -3,13 +3,12 @@ package com.myseoultravel;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
-import com.myseoultravel.adapter.SearchNearbyPlaceTabAdapter;
+import com.myseoultravel.adapter.SearchNearbyTabAdapter;
 
-public class SearchNearbyPlaceActivity extends AppCompatActivity {
+public class SearchNearbyActivity extends AppCompatActivity {
 
     private static final String LOG = MainActivity.class.getSimpleName();
 
@@ -24,8 +23,8 @@ public class SearchNearbyPlaceActivity extends AppCompatActivity {
 
         //어댑터 설정
         final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        final SearchNearbyPlaceTabAdapter searchNearbyPlaceTabAdapter = new SearchNearbyPlaceTabAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(searchNearbyPlaceTabAdapter);
+        final SearchNearbyTabAdapter searchNearbyTabAdapter = new SearchNearbyTabAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(searchNearbyTabAdapter);
 
         //
         tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));

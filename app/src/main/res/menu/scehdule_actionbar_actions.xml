@@ -2,12 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<!--    <item-->
-<!--        android:id="@+id/action_back"-->
-<!--        android:icon="@drawable/baseline_keyboard_backspace_white_48dp"-->
-<!--        android:title="Back"-->
-<!--        app:showAsAction="ifRoom"/>-->
-
     <item
         android:id="@+id/action_list"
         android:icon="@drawable/sharp_list_white_48dp"
