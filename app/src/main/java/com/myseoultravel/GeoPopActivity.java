@@ -142,7 +142,7 @@ public class GeoPopActivity extends AppCompatActivity implements OnMapReadyCallb
                         .title("The searched place was marked ");
                 mMap.addMarker(markerOptions);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(target));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
             }
 
             @Override

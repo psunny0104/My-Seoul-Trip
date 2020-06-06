@@ -56,22 +56,19 @@ public class HomeActivity extends AppCompatActivity implements SlyCalendarDialog
     private long backPressedTime = 0;
     public ArrayList<TravelItem> travelArrayList;
     public TravelAdapter travelAdapter;
-    public int travelCount = -1;
+    public int travelCount = 1;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
-    public String travelId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        setToolbar();
 
         mAuth = FirebaseAuth.getInstance();
 
-        setToolbar();
-
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.home_recycler_view);
-
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
@@ -96,7 +93,6 @@ public class HomeActivity extends AppCompatActivity implements SlyCalendarDialog
 
                 Intent intent = new Intent(getApplicationContext(), ScheduleActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                ArrayList<ScheduleItem> scheduleItems = travelItem.getScheduleItems();
 
                 intent.putExtra("travelId",travelItem.getTravelId());
                 startActivity(intent);
@@ -116,8 +112,8 @@ public class HomeActivity extends AppCompatActivity implements SlyCalendarDialog
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            travelCount = task.getResult().size();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                //ScheduleItem 저장
                                 Log.d("myTag", "Home: "+document.getId() + " => " + document.getData());
 
                                 //TravelItem 저장
@@ -231,20 +227,18 @@ public class HomeActivity extends AppCompatActivity implements SlyCalendarDialog
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        ArrayList<ScheduleItem> scheduleItemArrayList = new ArrayList<>();
+                        HashMap<String, ScheduleItem> scheduleItemArrayList = new HashMap<>();
                         Calendar tempCal = (Calendar)firstDate.clone();
-                        int idx = 1;
+                        int idx = 0;
                         while(!tempCal.after(secondDate)){
-                            ScheduleItem data = new ScheduleItem("Day"+idx++, new SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault()).format(tempCal.getTime()));
+                            ScheduleItem data = new ScheduleItem("Day"+(1+idx), new SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault()).format(tempCal.getTime()));
                             tempCal.add(Calendar.DATE,1);
-                            scheduleItemArrayList.add(data);
+                            scheduleItemArrayList.put(String.valueOf(idx++),data);
                         }
 
-                        TravelItem travelItem = new TravelItem(mAuth.getCurrentUser().getUid(),"Travel "+String.valueOf(2+(travelCount++)),
+                        TravelItem travelItem = new TravelItem(mAuth.getCurrentUser().getUid(),"Travel "+String.valueOf(++travelCount),
                                 new SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault()).format(firstDate.getTime()),
                                 new SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault()).format(secondDate.getTime()), scheduleItemArrayList);
-                        travelArrayList.add(travelItem);
-                        travelAdapter.notifyDataSetChanged();
 
                         //firestore 연동
                         db.collection("travel")
@@ -253,6 +247,11 @@ public class HomeActivity extends AppCompatActivity implements SlyCalendarDialog
                                     @Override
                                     public void onSuccess(DocumentReference documentReference) {
                                         Log.d("myTag", "Home: DocumentSnapshot added with ID: " + documentReference.getId());
+                                        travelItem.setTravelId(documentReference.getId());
+                                        travelArrayList.add(travelItem);
+                                        travelAdapter.notifyDataSetChanged();
+                                        db.collection("travel").document(documentReference.getId())
+                                                .update("travelId",documentReference.getId());
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {

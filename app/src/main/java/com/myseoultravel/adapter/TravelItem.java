@@ -1,6 +1,7 @@
 package com.myseoultravel.adapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TravelItem {
     private String travelId;
@@ -8,18 +9,18 @@ public class TravelItem {
     private String travelIdx;
     private String travelStartDate;
     private String travelEndDate;
-    private ArrayList<ScheduleItem> scheduleItems = new ArrayList<>();
+    private HashMap<String, ScheduleItem> scheduleItems = new HashMap<String, ScheduleItem>();
 
     public TravelItem(){};
 
-    public TravelItem(String travelIdx, String travelStartDate, String travelEndDate, ArrayList<ScheduleItem> scheduleItems) {
+    public TravelItem(String travelIdx, String travelStartDate, String travelEndDate, HashMap<String, ScheduleItem> scheduleItems) {
         this.travelIdx = travelIdx;
         this.travelStartDate = travelStartDate;
         this.travelEndDate = travelEndDate;
         this.scheduleItems = scheduleItems;
     }
 
-    public TravelItem(String userId, String travelIdx, String travelStartDate, String travelEndDate, ArrayList<ScheduleItem> scheduleItems) {
+    public TravelItem(String userId, String travelIdx, String travelStartDate, String travelEndDate, HashMap<String, ScheduleItem> scheduleItems) {
         this.userId = userId;
         this.travelIdx = travelIdx;
         this.travelStartDate = travelStartDate;
@@ -27,7 +28,7 @@ public class TravelItem {
         this.scheduleItems = scheduleItems;
     }
 
-    public TravelItem(String travelId, String userId, String travelIdx, String travelStartDate, String travelEndDate, ArrayList<ScheduleItem> scheduleItems) {
+    public TravelItem(String travelId, String userId, String travelIdx, String travelStartDate, String travelEndDate, HashMap<String, ScheduleItem> scheduleItems) {
         this.travelId = travelId;
         this.userId = userId;
         this.travelIdx = travelIdx;
@@ -76,11 +77,11 @@ public class TravelItem {
         this.travelEndDate = travelEndDate;
     }
 
-    public ArrayList<ScheduleItem> getScheduleItems() {
+    public HashMap<String, ScheduleItem> getScheduleItems() {
         return scheduleItems;
     }
 
-    public void setScheduleItems(ArrayList<ScheduleItem> scheduleItems) {
+    public void setScheduleItems(HashMap<String, ScheduleItem> scheduleItems) {
         this.scheduleItems = scheduleItems;
     }
 

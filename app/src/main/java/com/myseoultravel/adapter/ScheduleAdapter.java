@@ -18,10 +18,11 @@ import com.myseoultravel.SelectAreaActivity;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder> {
-    private ArrayList<ScheduleItem> mList;
+    private HashMap<String, ScheduleItem> mList;
     static final int REQUEST_CODE_ST = 1;
     static final int REQUEST_CODE_DST = 2;
 
@@ -50,7 +51,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
     }
 
 
-    public ScheduleAdapter(ArrayList<ScheduleItem> list) {
+    public ScheduleAdapter(HashMap<String, ScheduleItem> list) {
         this.mList = list;
     }
 
@@ -77,11 +78,11 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         viewholder.scheduleDayIdx.setGravity(Gravity.CENTER);
         viewholder.scheduleDate.setGravity(Gravity.CENTER);
 
-        viewholder.scheduleDayIdx.setText(mList.get(position).getScheduleDayIdx());
-        viewholder.scheduleDate.setText(mList.get(position).getScheduleDate());
+        viewholder.scheduleDayIdx.setText(mList.get(String.valueOf(position)).getScheduleDayIdx());
+        viewholder.scheduleDate.setText(mList.get(String.valueOf(position)).getScheduleDate());
 
-        viewholder.scheduleSt.setText(mList.get(position).getScheduleSt());
-        viewholder.scheduleDst.setText(mList.get(position).getScheduleDst());
+        viewholder.scheduleSt.setText(mList.get(String.valueOf(position)).getScheduleSt());
+        viewholder.scheduleDst.setText(mList.get(String.valueOf(position)).getScheduleDst());
         viewholder.scheduleSt.setSelected(true);
         viewholder.scheduleDst.setSelected(true);
 
