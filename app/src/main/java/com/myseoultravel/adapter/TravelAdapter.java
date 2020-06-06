@@ -20,7 +20,6 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
         private TextView travelStartDate;
         private TextView travelEndDate;
 
-
         public TravelViewHolder(View view) {
             super(view);
             this.travelIdx = (TextView) view.findViewById(R.id.home_idx);

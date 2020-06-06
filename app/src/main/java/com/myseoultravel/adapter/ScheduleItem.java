@@ -7,10 +7,13 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 public class ScheduleItem implements Serializable {
+    private String scheduleItem;
     private String scheduleDayIdx;
     private String scheduleDate;
     private String scheduleSt;
     private String scheduleDst;
+
+    public ScheduleItem(){};
 
     public ScheduleItem(String scheduleDayIdx, String scheduleDate) {
         this.scheduleDayIdx = scheduleDayIdx;
@@ -24,6 +27,22 @@ public class ScheduleItem implements Serializable {
         this.scheduleDate = scheduleDate;
         this.scheduleSt = scheduleSt;
         this.scheduleDst = scheduleDst;
+    }
+
+    public ScheduleItem(String scheduleItem, String scheduleDayIdx, String scheduleDate, String scheduleSt, String scheduleDst) {
+        this.scheduleItem = scheduleItem;
+        this.scheduleDayIdx = scheduleDayIdx;
+        this.scheduleDate = scheduleDate;
+        this.scheduleSt = scheduleSt;
+        this.scheduleDst = scheduleDst;
+    }
+
+    public String getScheduleItem() {
+        return scheduleItem;
+    }
+
+    public void setScheduleItem(String scheduleItem) {
+        this.scheduleItem = scheduleItem;
     }
 
     public String getScheduleDayIdx() {

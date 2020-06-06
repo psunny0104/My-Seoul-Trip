@@ -1,5 +1,6 @@
 package com.myseoultravel;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -9,65 +10,88 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.Toast;
 
-import com.archit.calendardaterangepicker.customviews.CalendarListener;
-import com.google.android.material.datepicker.CalendarConstraints;
-import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.myseoultravel.adapter.ScheduleAdapter;
 import com.myseoultravel.adapter.ScheduleItem;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.myseoultravel.adapter.TravelItem;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
-
-import ru.slybeaver.slycalendarview.SlyCalendarDialog;
+import java.util.HashMap;
 
 public class ScheduleActivity extends AppCompatActivity {
 
-    private ArrayList<ScheduleItem> mArrayList;
-    private ScheduleAdapter mAdapter;
+    private ArrayList<ScheduleItem> scheduleArrayList;
+    private ScheduleAdapter scheduleAdapter;
     private int count = -1;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth;
+    private String travelId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
 
+        mAuth = FirebaseAuth.getInstance();
+
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.schedule_recycler_view);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
-        mArrayList = new ArrayList<>();
+        scheduleArrayList = new ArrayList<>();
 
-        mAdapter = new ScheduleAdapter(mArrayList);
-        mRecyclerView.setAdapter(mAdapter);
+        scheduleAdapter = new ScheduleAdapter(scheduleArrayList);
+        mRecyclerView.setAdapter(scheduleAdapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
                 mLinearLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         Intent intent = getIntent();
-        ArrayList<ScheduleItem> scheduleItems = (ArrayList<ScheduleItem>) intent.getSerializableExtra("item");
-        Toast.makeText(getApplicationContext(), scheduleItems.get(0).getScheduleDayIdx()+' '+scheduleItems.get(0).getScheduleDate()+' ', Toast.LENGTH_LONG).show();
+        travelId = intent.getStringExtra("travelId");
 
-        for(int i = 0; i<scheduleItems.size(); i++){
-            ScheduleItem data = scheduleItems.get(i);
-            mArrayList.add(data);
-            count++;
-        }
-        mAdapter.notifyDataSetChanged();
+        getScheduleDb();
+        scheduleAdapter.notifyDataSetChanged();
 
         setToolbar();
+    }
+
+    private void getScheduleDb() {
+        Log.d("myTag", "Schedule: " + travelId);
+        db.collection("travel").document(travelId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        TravelItem travelItem = documentSnapshot.toObject(TravelItem.class);
+                        for (int i = 0; i < travelItem.getScheduleItems().size(); i++) {
+                            Log.d("myTag", "Schedule: " + travelItem.getScheduleItems().get(i).getScheduleDayIdx());
+                            scheduleArrayList.add(travelItem.getScheduleItems().get(i));
+                            count++;
+                        }
+                        scheduleAdapter.notifyDataSetChanged();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("myTag", "Home: Error getting document", e);
+                    }
+                });
     }
 
     private void setToolbar() {
@@ -106,15 +130,65 @@ public class ScheduleActivity extends AppCompatActivity {
 
         if(requestCode == 1){
             if (resultCode == Activity.RESULT_OK){
-                    mArrayList.get(data.getIntExtra("pos",0)).setScheduleSt(data.getStringExtra("targetAdd"));
-                    mArrayList.get(data.getIntExtra("pos",0)).setScheduleDst(data.getStringExtra("targetAdd"));
-                    mAdapter.notifyDataSetChanged();
+                    int pos = data.getIntExtra("pos",0);
+                    String add = data.getStringExtra("targetAdd");
+
+//                    db.collection("travel").document(travelId)
+//                            .set({"scheduleItems":})
+//                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                @Override
+//                                public void onSuccess(Void aVoid) {
+//                                    Log.d("myTag", "Schedule: DocumentSnapshot successfully updated!");
+//                                }
+//                            });
+//                            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                                @Override
+//                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+////                                    ScheduleItem scheduleItem = documentSnapshot.toObject(ScheduleItem.class);
+//                                    Log.d("myTag", "Schedule: " + documentSnapshot.getData());
+//                                }
+//                            });
+//                    db.collection("travel").document(travelId)
+//                            .update("scheduleItems."+pos+".scheduleSt",add,
+//                                    "scheduleItems."+pos+".scheduleDst",add)
+//                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                @Override
+//                                public void onSuccess(Void aVoid) {
+//                                    scheduleArrayList.get(pos).setScheduleSt(add);
+//                                    scheduleArrayList.get(pos).setScheduleDst(add);
+//                                    scheduleAdapter.notifyDataSetChanged();
+//                                    Log.d("myTag", "Schedule: DocumentSnapshot successfully updated!");
+//                                }
+//                            })
+//                            .addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception e) {
+//                                    Log.w("myTag", "Schedule: Error updating document", e);
+//                                }
+//                            });
             }
         }
         else if(requestCode == 2){
             if (resultCode == Activity.RESULT_OK){
-                    mArrayList.get(data.getIntExtra("pos",0)).setScheduleDst(data.getStringExtra("targetAdd"));
-                    mAdapter.notifyDataSetChanged();
+                int pos = data.getIntExtra("pos",0);
+                String add = data.getStringExtra("targetAdd");
+
+                db.collection("travel").document(travelId)
+                        .update("scheduleItems."+pos+".scheduleDst",add)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                scheduleArrayList.get(pos).setScheduleDst(add);
+                                scheduleAdapter.notifyDataSetChanged();
+                                Log.d("myTag", "Schedule: DocumentSnapshot successfully updated!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w("myTag", "Schedule: Error updating document", e);
+                            }
+                        });
             }
         }
         else{

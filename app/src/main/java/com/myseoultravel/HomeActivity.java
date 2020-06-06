@@ -1,5 +1,6 @@
 package com.myseoultravel;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +24,17 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 import com.myseoultravel.adapter.ScheduleAdapter;
 import com.myseoultravel.adapter.ScheduleItem;
 import com.myseoultravel.adapter.TravelAdapter;
@@ -32,7 +44,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import ru.slybeaver.slycalendarview.SlyCalendarDialog;
 
@@ -43,11 +57,16 @@ public class HomeActivity extends AppCompatActivity implements SlyCalendarDialog
     public ArrayList<TravelItem> travelArrayList;
     public TravelAdapter travelAdapter;
     public int travelCount = -1;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth;
+    public String travelId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        mAuth = FirebaseAuth.getInstance();
 
         setToolbar();
 
@@ -57,10 +76,13 @@ public class HomeActivity extends AppCompatActivity implements SlyCalendarDialog
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
         travelArrayList = new ArrayList<>();
-
         travelAdapter = new TravelAdapter(travelArrayList);
-        mRecyclerView.setAdapter(travelAdapter);
 
+        //db
+        getTravelDb();
+        travelAdapter.notifyDataSetChanged();
+
+        mRecyclerView.setAdapter(travelAdapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
                 mLinearLayoutManager.getOrientation());
@@ -76,7 +98,7 @@ public class HomeActivity extends AppCompatActivity implements SlyCalendarDialog
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 ArrayList<ScheduleItem> scheduleItems = travelItem.getScheduleItems();
 
-                intent.putExtra("item", scheduleItems);
+                intent.putExtra("travelId",travelItem.getTravelId());
                 startActivity(intent);
             }
 
@@ -84,6 +106,34 @@ public class HomeActivity extends AppCompatActivity implements SlyCalendarDialog
             public void onLongClick(View view, int position) {
             }
         }));
+    }
+
+    public void getTravelDb() {
+        db.collection("travel")
+                .whereEqualTo("userId",mAuth.getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                //ScheduleItem 저장
+                                Log.d("myTag", "Home: "+document.getId() + " => " + document.getData());
+
+                                //TravelItem 저장
+                                TravelItem travelItem = new TravelItem(document.getId(),document.getData().get("userId").toString(),
+                                        document.getData().get("travelIdx").toString(),
+                                        document.getData().get("travelStartDate").toString(),
+                                        document.getData().get("travelEndDate").toString()
+                                        );
+                                travelArrayList.add(travelItem);
+                            }
+                            travelAdapter.notifyDataSetChanged();
+                        } else {
+                            Log.w("myTag", "Home: Error getting documents.", task.getException());
+                        }
+                    }
+                });
     }
 
     private void setToolbar() {
@@ -145,7 +195,7 @@ public class HomeActivity extends AppCompatActivity implements SlyCalendarDialog
     public void onDataSelected(Calendar firstDate, Calendar secondDate, int hours, int minutes) {
         if (firstDate != null) {
             if (secondDate == null) {
-                dialogShowNotSelected();
+                dialogShowSelected(firstDate, firstDate);
             } else {
                 dialogShowSelected(firstDate, secondDate);
             }
@@ -185,16 +235,32 @@ public class HomeActivity extends AppCompatActivity implements SlyCalendarDialog
                         Calendar tempCal = (Calendar)firstDate.clone();
                         int idx = 1;
                         while(!tempCal.after(secondDate)){
-                            ScheduleItem data = new ScheduleItem("Day"+idx++,new SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault()).format(tempCal.getTime()));
+                            ScheduleItem data = new ScheduleItem("Day"+idx++, new SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault()).format(tempCal.getTime()));
                             tempCal.add(Calendar.DATE,1);
                             scheduleItemArrayList.add(data);
                         }
 
-                        TravelItem travelItem = new TravelItem("Travel "+String.valueOf(2+(travelCount++)),
+                        TravelItem travelItem = new TravelItem(mAuth.getCurrentUser().getUid(),"Travel "+String.valueOf(2+(travelCount++)),
                                 new SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault()).format(firstDate.getTime()),
                                 new SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault()).format(secondDate.getTime()), scheduleItemArrayList);
                         travelArrayList.add(travelItem);
                         travelAdapter.notifyDataSetChanged();
+
+                        //firestore 연동
+                        db.collection("travel")
+                                .add(travelItem)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        Log.d("myTag", "Home: DocumentSnapshot added with ID: " + documentReference.getId());
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w("myTag", "Home: Error adding document", e);
+                                    }
+                                });
                     }
                 });
         builder.setNegativeButton("No",
