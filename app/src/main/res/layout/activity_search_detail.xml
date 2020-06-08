@@ -7,6 +7,33 @@
     android:orientation="vertical"
     tools:context=".SearchDetailActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/detail_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/seoulRed"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintBottom_toTopOf="@id/detail_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/detail_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Place Details"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="14dp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
     <ImageView
         android:id="@+id/detail_image"
         android:layout_width="0dp"
@@ -14,7 +41,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detail_toolbar"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,8 +62,18 @@
             android:textAlignment="center"
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/detail_select"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/detail_select"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/baseline_favorite_black_48dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/detail_title"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

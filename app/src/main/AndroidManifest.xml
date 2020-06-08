@@ -15,14 +15,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".CourseActivity"></activity>
         <activity android:name=".GeoPopActivity" />
         <activity android:name=".ScheduleActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".SearchDetailActivity" />
         <activity android:name=".SearchNearbyActivity" />
         <activity android:name=".SelectAreaActivity" />
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,6 +30,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAIzAReIEnmcFpViaSTaMvXLiW4FExvrVY" />

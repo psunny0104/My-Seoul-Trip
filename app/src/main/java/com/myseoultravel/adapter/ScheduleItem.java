@@ -1,17 +1,19 @@
 package com.myseoultravel.adapter;
 
-import android.widget.Button;
-import android.widget.TextView;
-
 import java.io.Serializable;
-import java.util.Calendar;
 
 public class ScheduleItem implements Serializable {
-    private String scheduleItem;
     private String scheduleDayIdx;
     private String scheduleDate;
     private String scheduleSt;
     private String scheduleDst;
+    private String scheduleCourseId;
+
+    private Double scheduleStLng;
+    private Double scheduleStLat;
+
+    private Double scheduleDstLng;
+    private Double scheduleDstLat;
 
     public ScheduleItem(){};
 
@@ -22,6 +24,12 @@ public class ScheduleItem implements Serializable {
         this.scheduleDst = "";
     }
 
+    public ScheduleItem(String scheduleDayIdx, String scheduleDate, String scheduleCourseId) {
+        this.scheduleDayIdx = scheduleDayIdx;
+        this.scheduleDate = scheduleDate;
+        this.scheduleCourseId = scheduleCourseId;
+    }
+
     public ScheduleItem(String scheduleDayIdx, String scheduleDate, String scheduleSt, String scheduleDst) {
         this.scheduleDayIdx = scheduleDayIdx;
         this.scheduleDate = scheduleDate;
@@ -29,20 +37,53 @@ public class ScheduleItem implements Serializable {
         this.scheduleDst = scheduleDst;
     }
 
-    public ScheduleItem(String scheduleItem, String scheduleDayIdx, String scheduleDate, String scheduleSt, String scheduleDst) {
-        this.scheduleItem = scheduleItem;
+    public ScheduleItem(String scheduleDayIdx, String scheduleDate, String scheduleSt, String scheduleDst, String scheduleCourseId) {
         this.scheduleDayIdx = scheduleDayIdx;
         this.scheduleDate = scheduleDate;
         this.scheduleSt = scheduleSt;
         this.scheduleDst = scheduleDst;
+        this.scheduleCourseId = scheduleCourseId;
     }
 
-    public String getScheduleItem() {
-        return scheduleItem;
+
+    public Double getScheduleStLng() {
+        return scheduleStLng;
     }
 
-    public void setScheduleItem(String scheduleItem) {
-        this.scheduleItem = scheduleItem;
+    public void setScheduleStLng(Double scheduleStLng) {
+        this.scheduleStLng = scheduleStLng;
+    }
+
+    public Double getScheduleStLat() {
+        return scheduleStLat;
+    }
+
+    public void setScheduleStLat(Double scheduleStLat) {
+        this.scheduleStLat = scheduleStLat;
+    }
+
+    public Double getScheduleDstLng() {
+        return scheduleDstLng;
+    }
+
+    public void setScheduleDstLng(Double scheduleDstLng) {
+        this.scheduleDstLng = scheduleDstLng;
+    }
+
+    public Double getScheduleDstLat() {
+        return scheduleDstLat;
+    }
+
+    public void setScheduleDstLat(Double scheduleDstLat) {
+        this.scheduleDstLat = scheduleDstLat;
+    }
+
+    public String getScheduleCourseId() {
+        return scheduleCourseId;
+    }
+
+    public void setScheduleCourseId(String scheduleCourseId) {
+        this.scheduleCourseId = scheduleCourseId;
     }
 
     public String getScheduleDayIdx() {

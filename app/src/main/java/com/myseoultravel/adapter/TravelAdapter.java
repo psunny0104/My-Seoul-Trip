@@ -1,30 +1,52 @@
 package com.myseoultravel.adapter;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.myseoultravel.CourseActivity;
+import com.myseoultravel.HomeActivity;
 import com.myseoultravel.R;
+import com.myseoultravel.ScheduleActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Locale;
 
 public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelViewHolder>{
     private ArrayList<TravelItem> mList;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public class TravelViewHolder extends RecyclerView.ViewHolder {
         private TextView travelIdx;
         private TextView travelStartDate;
         private TextView travelEndDate;
+        private ImageButton travelDel;
+        private ImageButton travelSchedule;
 
         public TravelViewHolder(View view) {
             super(view);
             this.travelIdx = (TextView) view.findViewById(R.id.home_idx);
             this.travelStartDate = (TextView) view.findViewById(R.id.home_start_date);
             this.travelEndDate = (TextView) view.findViewById(R.id.home_end_date);
+            this.travelDel = (ImageButton) view.findViewById(R.id.home_item_delete);
+            this.travelSchedule = (ImageButton) view.findViewById(R.id.home_item_schedule);
         }
     }
 
@@ -53,10 +75,62 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
         viewholder.travelIdx.setText(mList.get(position).getTravelIdx());
         viewholder.travelStartDate.setText(mList.get(position).getTravelStartDate());
         viewholder.travelEndDate.setText(mList.get(position).getTravelEndDate());
+        viewholder.travelDel.setTag(viewholder.getAdapterPosition());
+        viewholder.travelDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos = (int) v.getTag();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setTitle("Alert");
+                builder.setMessage("Are you sure you want to erase?");
+                builder.setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d("myTag", "Home: Document was delete");
+                                db.collection("travel").document(mList.get(pos).getTravelId())
+                                        .delete();
+
+                                Intent intent = new Intent(v.getContext(), HomeActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                v.getContext().startActivity(intent);
+                            }
+                        });
+                builder.setNegativeButton("No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                builder.show();
+            }
+        });
+
+        viewholder.travelSchedule.setTag(viewholder.getAdapterPosition());
+        viewholder.travelSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos = (int) v.getTag();
+
+                TravelItem travelItem = mList.get(pos);
+                //Toast.makeText(getApplicationContext(), travelItem.getTravelIdx()+' '+travelItem.getTravelStartDate()+' '+travelItem.getTravelEndDate(), Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(v.getContext(), ScheduleActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+
+                intent.putExtra("travelId",travelItem.getTravelId());
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return (null != mList ? mList.size() : 0);
+    }
+
+    public void dialogShow()
+    {
+
     }
 }

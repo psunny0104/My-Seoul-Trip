@@ -1,10 +1,15 @@
 package com.myseoultravel;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,7 +17,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.myseoultravel.adapter.PoiItem;
 import com.myseoultravel.model.place.detail.DetailItem;
+import com.myseoultravel.model.place.tour.CategoryCodeModel;
 import com.myseoultravel.model.place.tour.ComInfoModel;
 import com.myseoultravel.model.place.tour.IntroInfoModel;
 import com.myseoultravel.service.ApiCallback;
@@ -27,10 +34,23 @@ public class SearchDetailActivity extends AppCompatActivity {
     GooglePlaceClient googlePlaceClient;
     TourApiClient tourApiClient;
 
+    int contentIdb = 0;
+    int contentTypeIdb = 0;
+    Double mapX = 0.0;
+    Double mapY = 0.0;
+    String address = "";
+    String title = "";
+    String image = "";
+    CategoryCodeModel categoryCodeModel = new CategoryCodeModel();
+    String cat1 = "";
+    String cat2 = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_detail);
+        setToolbar();
+        categoryCodeModel.init();
 
         googlePlaceClient = GooglePlaceClient.getInstance(this).createBaseApi();
         tourApiClient = TourApiClient.getInstance(this).createBaseApi();
@@ -46,6 +66,46 @@ public class SearchDetailActivity extends AppCompatActivity {
         }
         else if (api.equals("google")) {
             searchDetailPlace(intent.getStringExtra("place_id"));
+        }
+
+        Button selectBtn = (Button) findViewById(R.id.detail_select);
+        selectBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent newIntent = new Intent(getApplicationContext(),CourseActivity.class);
+                PoiItem poiItem = new PoiItem(0,contentIdb,contentTypeIdb,mapX,mapY,address,title,image);
+                Log.i("myTag","Detail: "+poiItem.getPoiTitle());
+                newIntent.putExtra("poiItem",poiItem);
+                newIntent.putExtra("pos",intent.getIntExtra("pos",0));
+                newIntent.putExtra("courseId",intent.getStringExtra("courseId"));
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                setResult(100, newIntent);
+                finish();
+            }
+        });
+    }
+
+    private void setToolbar() {
+        Toolbar scheduleBar = (Toolbar) findViewById(R.id.detail_toolbar);
+        setSupportActionBar(scheduleBar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.baseline_keyboard_backspace_white_48dp);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home :
+                // TODO : process the click event for action_search item.
+                onBackPressed();
+                return true ;
+            // ...
+            // ...
+            default :
+                return super.onOptionsItemSelected(item) ;
         }
     }
 
@@ -68,6 +128,14 @@ public class SearchDetailActivity extends AppCompatActivity {
                 String photo = comInfoModel.getResponse().getBody().getItems().getItem().getFirstimage();
                 Log.i("myTag", photo);
                 getImageByGlide(photo, viewThumbnail);
+
+                contentIdb = comInfoModel.getResponse().getBody().getItems().getItem().getContentid();
+                contentTypeIdb = comInfoModel.getResponse().getBody().getItems().getItem().getContenttypeid();
+                mapX = comInfoModel.getResponse().getBody().getItems().getItem().getMapx();
+                mapY = comInfoModel.getResponse().getBody().getItems().getItem().getMapy();
+                address = comInfoModel.getResponse().getBody().getItems().getItem().getAddr1();
+                title = comInfoModel.getResponse().getBody().getItems().getItem().getTitle();
+                image = comInfoModel.getResponse().getBody().getItems().getItem().getFirstimage();
             }
 
             @Override

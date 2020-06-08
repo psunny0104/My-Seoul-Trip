@@ -83,12 +83,18 @@ public class ShoppingFragment extends Fragment {
                     @Override
                     public void onItemClick(View v, int position) {
                         // TODO : 아이템 클릭 이벤트를 MainActivity에서 처리.
+                        Intent oldIntent = getActivity().getIntent();
+                        Log.i("myTag", "Shopping: "+oldIntent.getStringExtra("courseId"));
                         Intent intent = new Intent(getContext(), SearchDetailActivity.class);
                         intent.putExtra("contentId", localList.getResponse().getBody().getItems().getItem().get(position).getContentid());
                         intent.putExtra("contentTypeId", localList.getResponse().getBody().getItems().getItem().get(position).getContenttypeid());
                         intent.putExtra("api","tour");
+                        intent.putExtra("pos",oldIntent.getIntExtra("pos",0));
+                        intent.putExtra("courseId",oldIntent.getStringExtra("courseId"));
                         Log.i("myTag", localList.getResponse().getBody().getItems().getItem().get(position).toContetIdString());
+                        intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
                         startActivity(intent);
+                        getActivity().finish();
                     }
                 }) ;
             }

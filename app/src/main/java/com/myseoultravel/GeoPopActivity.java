@@ -56,7 +56,7 @@ public class GeoPopActivity extends AppCompatActivity implements OnMapReadyCallb
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getGetInfo(editText, placeAdd);
+                getGeoInfo(editText, placeAdd);
             }
         });
 
@@ -67,8 +67,8 @@ public class GeoPopActivity extends AppCompatActivity implements OnMapReadyCallb
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ScheduleActivity.class);
                 intent.putExtra("targetAdd", targetAdd);
-                intent.putExtra("targetLng",targetLng);
-                intent.putExtra("targetLat",targetLat);
+                intent.putExtra("targetLng", targetLng);
+                intent.putExtra("targetLat", targetLat);
                 intent.putExtra("pos",pos);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 setResult(RESULT_OK,intent);
@@ -116,7 +116,7 @@ public class GeoPopActivity extends AppCompatActivity implements OnMapReadyCallb
         builder.show();
     }
 
-    public void getGetInfo(EditText editText, TextView placeAdd) {
+    public void getGeoInfo(EditText editText, TextView placeAdd) {
         googleGeoClient.getGeocoding(GoogleGeoService.KEY, editText.getText().toString(), new ApiCallback<GeocodingItem>() {
             @Override
             public void onError(Throwable t) {

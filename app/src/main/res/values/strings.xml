@@ -12,7 +12,7 @@
     <string name="start_location">START LOCATION</string>
     <string name="end_location">END LOCATION</string>
     <string name="duration">DURATION</string>
-    <string name="find_addres">FIND</string>
+    <string name="find_address">FIND</string>
 
     <string name="dateFormat" translatable="false">YYYY. MM. dd, EE</string>
     <string name="timeFormat" translatable="false">YYYY. MM. dd, EE</string>

@@ -20,6 +20,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.myseoultravel.adapter.CourseItem;
 import com.myseoultravel.adapter.ScheduleAdapter;
 import com.myseoultravel.adapter.ScheduleItem;
 import com.myseoultravel.adapter.TravelItem;
@@ -73,6 +75,7 @@ public class ScheduleActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         TravelItem travelItem = documentSnapshot.toObject(TravelItem.class);
+
                         for (int i = 0; i < travelItem.getScheduleItems().size(); i++) {
                             Log.d("myTag", "Schedule: " + travelItem.getScheduleItems().get(String.valueOf(i)).getScheduleDayIdx());
                             scheduleHashMap.put(String.valueOf(i), travelItem.getScheduleItems().get(String.valueOf(i)));
@@ -127,17 +130,43 @@ public class ScheduleActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK){
                     int pos = data.getIntExtra("pos",0);
                     String add = data.getStringExtra("targetAdd");
+                    Double lat = data.getDoubleExtra("targetLat",0.0);
+                    Double lng = data.getDoubleExtra("targetLng",0.0);
 
                     db.collection("travel").document(travelId)
                             .update("scheduleItems."+pos+".scheduleSt",add,
-                                    "scheduleItems."+pos+".scheduleDst",add)
+                                    "scheduleItems."+pos+".scheduleDst",add,
+                                    "scheduleItems."+pos+".scheduleStLng",lng,
+                                    "scheduleItems."+pos+".scheduleStLat",lat,
+                                    "scheduleItems."+pos+".scheduleDstLat",lat,
+                                    "scheduleItems."+pos+".scheduleDstLng",lng)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     scheduleHashMap.get(String.valueOf(pos)).setScheduleSt(add);
                                     scheduleHashMap.get(String.valueOf(pos)).setScheduleDst(add);
+                                    scheduleHashMap.get(String.valueOf(pos)).setScheduleStLat(lat);
+                                    scheduleHashMap.get(String.valueOf(pos)).setScheduleStLng(lng);
+                                    scheduleHashMap.get(String.valueOf(pos)).setScheduleDstLat(lat);
+                                    scheduleHashMap.get(String.valueOf(pos)).setScheduleDstLat(lng);
                                     scheduleAdapter.notifyDataSetChanged();
                                     Log.d("myTag", "Schedule: DocumentSnapshot successfully updated!");
+
+                                    CourseItem courseItem = new CourseItem(travelId+" "+String.valueOf(pos),add,lng,lat,add,lng,lat,scheduleHashMap.get(String.valueOf(pos)).getScheduleDayIdx(),scheduleHashMap.get(String.valueOf(pos)).getScheduleDate());
+                                    db.collection("course").document(travelId+"_"+pos)
+                                            .set(courseItem)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.w("myTag", "Course: updating document complete");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w("myTag", "Course: Error updating document", e);
+                                                }
+                                            });
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -146,21 +175,46 @@ public class ScheduleActivity extends AppCompatActivity {
                                     Log.w("myTag", "Schedule: Error updating document", e);
                                 }
                             });
+
             }
         }
         else if(requestCode == 2){
             if (resultCode == Activity.RESULT_OK){
                 int pos = data.getIntExtra("pos",0);
                 String add = data.getStringExtra("targetAdd");
+                Double lat = data.getDoubleExtra("targetLat",0.0);
+                Double lng = data.getDoubleExtra("targetLng",0.0);
 
                 db.collection("travel").document(travelId)
-                        .update("scheduleItems."+pos+".scheduleDst",add)
+                        .update("scheduleItems."+pos+".scheduleDst",add,
+                                "scheduleItems."+pos+".scheduleDstLat",lat,
+                                "scheduleItems."+pos+".scheduleDstLng",lng)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 scheduleHashMap.get(String.valueOf(pos)).setScheduleDst(add);
+                                scheduleHashMap.get(String.valueOf(pos)).setScheduleDstLat(lat);
+                                scheduleHashMap.get(String.valueOf(pos)).setScheduleDstLat(lng);
                                 scheduleAdapter.notifyDataSetChanged();
                                 Log.d("myTag", "Schedule: DocumentSnapshot successfully updated!");
+
+                                CourseItem courseItem = new CourseItem(travelId,add,lng,lat);
+                                db.collection("course").document(travelId+"_"+pos)
+                                        .update("courseDstAdd",add,
+                                                "courseDstLng",lng,
+                                                "courseDstLat",lat)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.w("myTag", "Course: updating document complete");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w("myTag", "Course: Error updating document", e);
+                                            }
+                                        });
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {

@@ -1,13 +1,18 @@
 package com.myseoultravel;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -26,10 +31,12 @@ public class SelectAreaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select);
+        setToolbar();
 
+        Intent intent = getIntent();
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         adapter.setItems(arrayList);
 
@@ -38,36 +45,40 @@ public class SelectAreaActivity extends AppCompatActivity {
             public void onClick(View view, int position) {
                 SelectAreaItem selectAreaItem = (SelectAreaItem) arrayList.get(position);
                 System.out.println(position);
-                Intent intent = new Intent(getApplicationContext(), SearchNearbyActivity.class);
-                intent.putExtra("name", selectAreaItem.getAreaTitle());
+                Intent newIntent = new Intent(getApplicationContext(), SearchNearbyActivity.class);
+                newIntent.putExtra("name", selectAreaItem.getAreaTitle());
+                newIntent.putExtra("courseId", intent.getStringExtra("courseId"));
+                newIntent.putExtra("pos",intent.getIntExtra("pos",0));
+                Log.i("myTag","Area: "+intent.getStringExtra("courseId"));
                 //postion에 따른 좌표 분기
                 if(position == 0){
-                    intent.putExtra("coords", "37.560892, 126.986168");
-                    intent.putExtra("mapX", 126.986168);
-                    intent.putExtra("mapY", 37.560892);
+                    newIntent.putExtra("coords", "37.560892, 126.986168");
+                    newIntent.putExtra("mapX", 126.986168);
+                    newIntent.putExtra("mapY", 37.560892);
                 }
                 else if(position == 1){
-                    intent.putExtra("coords", "37.564687, 127.004912");
-                    intent.putExtra("mapX", 127.004912);
-                    intent.putExtra("mapY", 37.564687);
+                    newIntent.putExtra("coords", "37.564687, 127.004912");
+                    newIntent.putExtra("mapX", 127.004912);
+                    newIntent.putExtra("mapY", 37.564687);
                 }
                 else if(position == 2){
-                    intent.putExtra("coords", "37.555247, 126.936692");
-                    intent.putExtra("mapX", 126.936692);
-                    intent.putExtra("mapY", 37.555247);
+                    newIntent.putExtra("coords", "37.555247, 126.936692");
+                    newIntent.putExtra("mapX", 126.936692);
+                    newIntent.putExtra("mapY", 37.555247);
                 }
                 else if(position == 3){
-                    intent.putExtra("coords", "37.497900, 127.027547");
-                    intent.putExtra("mapX", 127.027547);
-                    intent.putExtra("mapY", 37.497900);
+                    newIntent.putExtra("coords", "37.497900, 127.027547");
+                    newIntent.putExtra("mapX", 127.027547);
+                    newIntent.putExtra("mapY", 37.497900);
                 }
                 else if(position == 4){
-                    intent.putExtra("coords", "37.534594, 126.994220");
-                    intent.putExtra("mapX", 126.994220);
-                    intent.putExtra("mapY", 37.534594);
+                    newIntent.putExtra("coords", "37.534594, 126.994220");
+                    newIntent.putExtra("mapX", 126.994220);
+                    newIntent.putExtra("mapY", 37.534594);
                 }
-
-                startActivity(intent);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+                startActivity(newIntent);
+                finish();
             }
 
             @Override
@@ -75,6 +86,30 @@ public class SelectAreaActivity extends AppCompatActivity {
             }
         }));
 
+    }
+
+    private void setToolbar() {
+        Toolbar scheduleBar = (Toolbar) findViewById(R.id.select_toolbar);
+        setSupportActionBar(scheduleBar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.baseline_keyboard_backspace_white_48dp);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home :
+                // TODO : process the click event for action_search item.
+                onBackPressed();
+                return true ;
+            // ...
+            // ...
+            default :
+                return super.onOptionsItemSelected(item) ;
+        }
     }
 
     public interface ClickListener {

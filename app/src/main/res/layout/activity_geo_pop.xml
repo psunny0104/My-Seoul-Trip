@@ -74,7 +74,7 @@
             android:id="@+id/geo_search_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginEnd="200dp"
+            android:layout_marginEnd="24dp"
             android:background="@drawable/baseline_search_black_48dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -108,7 +108,7 @@
         <TextView
             android:id="@+id/geo_add"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginStart="24dp"
             android:hint="Please enter the name or address of the place."
             android:textColor="@color/seoulSky"
@@ -121,8 +121,8 @@
 
         <Button
             android:id="@+id/geo_ok_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginEnd="24dp"
             android:background="@drawable/baseline_check_circle_black_48dp"
             app:layout_constraintBottom_toBottomOf="parent"

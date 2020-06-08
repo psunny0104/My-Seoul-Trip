@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="250dp">
+    android:layout_height="200dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,19 +16,42 @@
         app:layout_constraintVertical_bias="0.0">
 
         <Button
-            android:id="@+id/schedule_item_add"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="139dp"
+            android:id="@+id/schedule_making_course"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="15dp"
-            android:background="@drawable/outline_add_location_black_48dp"
+            android:background="@color/seoulSky"
+            android:text="Making Course"
+            android:textColor="@color/seoulSilver"
+            android:textSize="12sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.865"
+            app:layout_constraintEnd_toStartOf="@+id/schedule_travel"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.117" />
+            app:layout_constraintVertical_bias="0.008" />
+
+        <Button
+            android:id="@+id/schedule_travel"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:background="@color/seoulSky"
+            android:text="Travel"
+            android:textColor="@color/seoulSilver"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.929"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.008" />
 
         <TextView
             android:id="@+id/schedule_day_date"
@@ -40,10 +63,10 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.334"
+            app:layout_constraintHorizontal_bias="0.458"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.155" />
+            app:layout_constraintVertical_bias="0.4" />
 
         <TextView
             android:id="@+id/schedule_day_idx"
@@ -58,7 +81,7 @@
             app:layout_constraintHorizontal_bias="0.148"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.139" />
+            app:layout_constraintVertical_bias="0.4" />
 
         <TextView
             android:id="@+id/schedule_start"
@@ -73,7 +96,7 @@
             app:layout_constraintEnd_toStartOf="@id/schedule_start_add"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.502" />
+            app:layout_constraintVertical_bias="0.65" />
 
         <TextView
             android:id="@+id/schedule_end"
@@ -85,11 +108,11 @@
             android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/schedule_end_add"
+            app:layout_constraintEnd_toStartOf="@id/schedule_dst_add"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.762" />
+            app:layout_constraintVertical_bias="0.9" />
 
         <TextView
             android:id="@+id/schedule_start_add"
@@ -108,10 +131,10 @@
             app:layout_constraintEnd_toStartOf="@id/schedule_start_search"
             app:layout_constraintStart_toEndOf="@id/schedule_start"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.502" />
+            app:layout_constraintVertical_bias="0.65" />
 
         <TextView
-            android:id="@+id/schedule_end_add"
+            android:id="@+id/schedule_dst_add"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
@@ -127,7 +150,7 @@
             app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toEndOf="@id/schedule_end"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.762" />
+            app:layout_constraintVertical_bias="0.9" />
 
         <Button
             android:id="@+id/schedule_start_search"
@@ -139,7 +162,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/schedule_start_add"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.65" />
 
         <Button
             android:id="@+id/schedule_end_search"
@@ -150,9 +174,9 @@
             android:background="@drawable/baseline_search_black_48dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/schedule_end_add"
+            app:layout_constraintStart_toEndOf="@id/schedule_dst_add"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.792" />
+            app:layout_constraintVertical_bias="0.9" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

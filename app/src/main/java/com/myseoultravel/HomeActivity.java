@@ -84,24 +84,6 @@ public class HomeActivity extends AppCompatActivity implements SlyCalendarDialog
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
                 mLinearLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
-
-        mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), mRecyclerView, new ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                TravelItem travelItem = travelArrayList.get(position);
-                //Toast.makeText(getApplicationContext(), travelItem.getTravelIdx()+' '+travelItem.getTravelStartDate()+' '+travelItem.getTravelEndDate(), Toast.LENGTH_LONG).show();
-
-                Intent intent = new Intent(getApplicationContext(), ScheduleActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-
-                intent.putExtra("travelId",travelItem.getTravelId());
-                startActivity(intent);
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-            }
-        }));
     }
 
     public void getTravelDb() {
@@ -231,7 +213,7 @@ public class HomeActivity extends AppCompatActivity implements SlyCalendarDialog
                         Calendar tempCal = (Calendar)firstDate.clone();
                         int idx = 0;
                         while(!tempCal.after(secondDate)){
-                            ScheduleItem data = new ScheduleItem("Day"+(1+idx), new SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault()).format(tempCal.getTime()));
+                            ScheduleItem data = new ScheduleItem("Day"+(1+idx), new SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault()).format(tempCal.getTime()), "");
                             tempCal.add(Calendar.DATE,1);
                             scheduleItemArrayList.put(String.valueOf(idx++),data);
                         }
@@ -241,6 +223,7 @@ public class HomeActivity extends AppCompatActivity implements SlyCalendarDialog
                                 new SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault()).format(secondDate.getTime()), scheduleItemArrayList);
 
                         //firestore 연동
+                        int finalIdx = idx;
                         db.collection("travel")
                                 .add(travelItem)
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -252,6 +235,10 @@ public class HomeActivity extends AppCompatActivity implements SlyCalendarDialog
                                         travelAdapter.notifyDataSetChanged();
                                         db.collection("travel").document(documentReference.getId())
                                                 .update("travelId",documentReference.getId());
+                                        for(int i = finalIdx-1; i>=0; i--){
+                                            db.collection("travel").document(documentReference.getId())
+                                                    .update("scheduleItems."+i+".scheduleCourseId",documentReference.getId());
+                                        }
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
@@ -271,51 +258,4 @@ public class HomeActivity extends AppCompatActivity implements SlyCalendarDialog
         builder.show();
     }
 
-    //ItemListener
-    public interface ClickListener {
-        void onClick(View view, int position);
-
-        void onLongClick(View view, int position);
-    }
-
-    public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
-
-        private GestureDetector gestureDetector;
-        private HomeActivity.ClickListener clickListener;
-
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final HomeActivity.ClickListener clickListener) {
-            this.clickListener = clickListener;
-            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onSingleTapUp(MotionEvent e) {
-                    return true;
-                }
-
-                @Override
-                public void onLongPress(MotionEvent e) {
-                    View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                    if (child != null && clickListener != null) {
-                        clickListener.onLongClick(child, recyclerView.getChildAdapterPosition(child));
-                    }
-                }
-            });
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-            View child = rv.findChildViewUnder(e.getX(), e.getY());
-            if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
-                clickListener.onClick(child, rv.getChildAdapterPosition(child));
-            }
-            return false;
-        }
-
-        @Override
-        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-        }
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-        }
-    }
 }
