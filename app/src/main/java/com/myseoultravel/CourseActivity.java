@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,16 +25,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.myseoultravel.adapter.CourseAdapter;
 import com.myseoultravel.adapter.CourseItem;
 import com.myseoultravel.adapter.PoiItem;
-import com.myseoultravel.adapter.ScheduleAdapter;
 import com.myseoultravel.adapter.ScheduleItem;
-import com.myseoultravel.adapter.TravelItem;
 import com.myseoultravel.model.place.tour.CategoryCodeModel;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class CourseActivity extends AppCompatActivity {
 
@@ -45,8 +42,8 @@ public class CourseActivity extends AppCompatActivity {
     int pos;
     ScheduleItem scheduleItem;
     CourseItem courseItem;
-    int courseCount = 0;
-    HashMap<String, PoiItem> poiItemHashMap;
+    int poiCount = 0;
+    ArrayList<PoiItem> poiItems;
     CourseAdapter courseAdapter;
     CategoryCodeModel categoryCodeModel = new CategoryCodeModel();
     RecyclerView mRecyclerView;
@@ -64,8 +61,8 @@ public class CourseActivity extends AppCompatActivity {
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
-        poiItemHashMap = new HashMap<>();
-        courseAdapter = new CourseAdapter(poiItemHashMap);
+        poiItems = new ArrayList<>();
+        courseAdapter = new CourseAdapter(poiItems);
 
         Intent intent = getIntent();
         Log.i("myTag","Course: "+intent.getStringExtra("courseId"));
@@ -88,6 +85,7 @@ public class CourseActivity extends AppCompatActivity {
                 Intent newIntent = new Intent(getApplicationContext(),SelectAreaActivity.class);
                 newIntent.putExtra("courseId",courseId);
                 newIntent.putExtra("pos",pos);
+                newIntent.putExtra("poiCount",poiCount);
                 startActivityForResult(newIntent,100);
             }
         });
@@ -136,34 +134,6 @@ public class CourseActivity extends AppCompatActivity {
     }
 
     private void getScheduleDb() {
-        /*
-        Log.d("myTag", "Course: " + courseId);
-        db.collection("travel").document(courseId)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        TravelItem travelItem = documentSnapshot.toObject(TravelItem.class);
-                        Log.d("myTag", "Course: " + travelItem.getScheduleItems().get(String.valueOf(pos)).getScheduleDayIdx());
-                        scheduleItem = travelItem.getScheduleItems().get(String.valueOf(pos));
-
-                        TextView courseDayIdx = (TextView) findViewById(R.id.course_day_idx);
-                        TextView courseDayDate = (TextView) findViewById(R.id.course_day_date);
-                        TextView courseStAdd = (TextView) findViewById(R.id.course_start_add);
-                        TextView courseDstAdd = (TextView) findViewById(R.id.course_dst_add);
-                        courseDayIdx.setText(scheduleItem.getScheduleDayIdx());
-                        courseDayDate.setText(scheduleItem.getScheduleDate());
-                        courseDstAdd.setText(scheduleItem.getScheduleDst());
-                        courseStAdd.setText(scheduleItem.getScheduleSt());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("myTag", "Course: Error getting document", e);
-                    }
-                });
-         */
         Log.i("myTag","Course: "+pos);
         db.collection("course").document(courseId+"_"+pos)
                 .get()
@@ -172,23 +142,39 @@ public class CourseActivity extends AppCompatActivity {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Log.i("myTag", "Course: "+courseId);
                         courseItem = (CourseItem) documentSnapshot.toObject(CourseItem.class);
-                        courseCount = courseItem.getPoiItemHashMap().size();
-                        Log.d("myTag", "Course: " + courseItem.getCourseItemId());
+                        //poiCount = courseItem.getPoiItemHashMap().size();
+                        Log.d("myTag", "Course: " + courseItem.getTravelItemId());
 
                         TextView courseDayIdx = (TextView) findViewById(R.id.course_day_idx);
                         TextView courseDayDate = (TextView) findViewById(R.id.course_day_date);
                         TextView courseStAdd = (TextView) findViewById(R.id.course_start_add);
                         TextView courseDstAdd = (TextView) findViewById(R.id.course_dst_add);
-                        courseDayIdx.setText(courseItem.getCourseDayIdx());
+                        courseDayIdx.setText("Day "+courseItem.getCourseDayIdx());
                         courseDayDate.setText(courseItem.getCourseDate());
                         courseDstAdd.setText(courseItem.getCourseDstAdd());
                         courseStAdd.setText(courseItem.getCourseStAdd());
 
-                        courseCount = courseItem.getPoiItemHashMap().size();
-                        for(int i = 0; i<courseCount; i++){
-                            poiItemHashMap.put(String.valueOf(i),courseItem.getPoiItemHashMap().get(String.valueOf(i)));
-                        }
-                        courseAdapter.notifyDataSetChanged();
+                        db.collection("poi").whereEqualTo("courseItemId",courseId+"_"+pos)
+                                .get()
+                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                        poiCount = queryDocumentSnapshots.size();
+                                        if(poiCount != 0){
+                                            for(int i = 0; i<poiCount; i++){
+                                                PoiItem poiItem = queryDocumentSnapshots.getDocuments().get(i).toObject(PoiItem.class);
+                                                poiItems.add(poiItem);
+                                            }
+                                            courseAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w("myTag", "Course: Error getting document", e);
+                                    }
+                                });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -208,21 +194,24 @@ public class CourseActivity extends AppCompatActivity {
             if(resultCode == 100){
                 PoiItem poiItem = (PoiItem) data.getSerializableExtra("poiItem");
                 Log.i("myTag", "Course: "+poiItem.getPoiTitle());
+                poiItem.setTravelItemId(courseId);
                 poiItem.setCourseItemId(courseId+"_"+pos);
-                poiItemHashMap.put(String.valueOf(courseCount++),poiItem);
-                courseItem.setPoiItemHashMap(poiItemHashMap);
-                db.collection("course").document(courseId+"_"+pos)
-                        .update("poiItemHashMap",poiItemHashMap)
+                poiItems.add(poiItem);
+                poiCount++;
+                db.collection("poi").document(courseId+"_"+pos+"_"+data.getIntExtra("poiCount",0))
+                        .set(poiItem)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Log.d("myTag", "Course: DocumentSnapshot successfully updated!");
+                                Log.d("myTag", "Course: DocumentSnapshot successfully added!");
+
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Log.w("myTag", "Course: Error updating document", e);
+                                Log.w("myTag", "Course: Error adding document", e);
+
                             }
                         });
                 courseAdapter.notifyDataSetChanged();

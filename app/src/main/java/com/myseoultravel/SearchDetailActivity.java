@@ -73,10 +73,11 @@ public class SearchDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent newIntent = new Intent(getApplicationContext(),CourseActivity.class);
-                PoiItem poiItem = new PoiItem(0,contentIdb,contentTypeIdb,mapX,mapY,address,title,image);
+                PoiItem poiItem = new PoiItem(intent.getIntExtra("poiCount",0),contentIdb,contentTypeIdb,mapX,mapY,address,title,image);
                 Log.i("myTag","Detail: "+poiItem.getPoiTitle());
                 newIntent.putExtra("poiItem",poiItem);
                 newIntent.putExtra("pos",intent.getIntExtra("pos",0));
+                newIntent.putExtra("poiCount",intent.getIntExtra("poiCount",0));
                 newIntent.putExtra("courseId",intent.getStringExtra("courseId"));
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 setResult(100, newIntent);

@@ -213,12 +213,12 @@ public class HomeActivity extends AppCompatActivity implements SlyCalendarDialog
                         Calendar tempCal = (Calendar)firstDate.clone();
                         int idx = 0;
                         while(!tempCal.after(secondDate)){
-                            ScheduleItem data = new ScheduleItem("Day"+(1+idx), new SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault()).format(tempCal.getTime()), "");
+                            ScheduleItem data = new ScheduleItem((1+idx), new SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault()).format(tempCal.getTime()), "");
                             tempCal.add(Calendar.DATE,1);
                             scheduleItemArrayList.put(String.valueOf(idx++),data);
                         }
 
-                        TravelItem travelItem = new TravelItem(mAuth.getCurrentUser().getUid(),"Travel "+String.valueOf(++travelCount),
+                        TravelItem travelItem = new TravelItem(mAuth.getCurrentUser().getUid(),String.valueOf(++travelCount),
                                 new SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault()).format(firstDate.getTime()),
                                 new SimpleDateFormat(getString(R.string.dateFormat), Locale.getDefault()).format(secondDate.getTime()), scheduleItemArrayList);
 

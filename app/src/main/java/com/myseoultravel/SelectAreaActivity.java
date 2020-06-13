@@ -49,6 +49,7 @@ public class SelectAreaActivity extends AppCompatActivity {
                 newIntent.putExtra("name", selectAreaItem.getAreaTitle());
                 newIntent.putExtra("courseId", intent.getStringExtra("courseId"));
                 newIntent.putExtra("pos",intent.getIntExtra("pos",0));
+                newIntent.putExtra("poiCount",intent.getIntExtra("poiCount",0));
                 Log.i("myTag","Area: "+intent.getStringExtra("courseId"));
                 //postion에 따른 좌표 분기
                 if(position == 0){

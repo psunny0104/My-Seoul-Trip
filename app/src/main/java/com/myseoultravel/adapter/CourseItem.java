@@ -1,9 +1,10 @@
 package com.myseoultravel.adapter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CourseItem {
-    private String CourseItemId;
+    private String travelItemId;
 
     private String courseStTitle;
     private String courseStAdd;
@@ -15,16 +16,15 @@ public class CourseItem {
     private Double courseDstLng;
     private Double courseDstLat;
 
-    private String courseDayIdx;
+    private int courseDayIdx;
     private String courseDate;
 
     private String courseItemId;
-    private HashMap<String, PoiItem> poiItemHashMap = new HashMap<String, PoiItem>();
 
     public CourseItem(){};
 
-    public CourseItem(String courseItemId, String courseStTitle, String courseStAdd, Double courseStLng, Double courseStLat, String courseDstTitle, String courseDstAdd, Double courseDstLng, Double courseDstLat, HashMap<String, PoiItem> poiItemHashMap) {
-        this.CourseItemId = courseItemId;
+    public CourseItem(String travelItemId, String courseStTitle, String courseStAdd, Double courseStLng, Double courseStLat, String courseDstTitle, String courseDstAdd, Double courseDstLng, Double courseDstLat) {
+        this.travelItemId = travelItemId;
         this.courseStTitle = courseStTitle;
         this.courseStAdd = courseStAdd;
         this.courseStLng = courseStLng;
@@ -33,18 +33,17 @@ public class CourseItem {
         this.courseDstAdd = courseDstAdd;
         this.courseDstLng = courseDstLng;
         this.courseDstLat = courseDstLat;
-        this.poiItemHashMap = poiItemHashMap;
     }
 
-    public CourseItem(String courseItemId, String courseDstAdd, Double courseDstLng, Double courseDstLat) {
-        this.CourseItemId = courseItemId;
+    public CourseItem(String travelItemId, String courseDstAdd, Double courseDstLng, Double courseDstLat) {
+        this.travelItemId = travelItemId;
         this.courseDstAdd = courseDstAdd;
         this.courseDstLng = courseDstLng;
         this.courseDstLat = courseDstLat;
     }
 
-    public CourseItem(String courseItemId, String courseStAdd, Double courseStLng, Double courseStLat, String courseDstAdd, Double courseDstLng, Double courseDstLat) {
-        this.CourseItemId = courseItemId;
+    public CourseItem(String travelItemId, String courseStAdd, Double courseStLng, Double courseStLat, String courseDstAdd, Double courseDstLng, Double courseDstLat) {
+        this.travelItemId = travelItemId;
         this.courseStAdd = courseStAdd;
         this.courseStLng = courseStLng;
         this.courseStLat = courseStLat;
@@ -53,8 +52,8 @@ public class CourseItem {
         this.courseDstLat = courseDstLat;
     }
 
-    public CourseItem(String courseItemId, String courseStAdd, Double courseStLng, Double courseStLat, String courseDstAdd, Double courseDstLng, Double courseDstLat, String courseDayIdx, String courseDate) {
-        this.CourseItemId = courseItemId;
+    public CourseItem(String travelItemId, String courseStAdd, Double courseStLng, Double courseStLat, String courseDstAdd, Double courseDstLng, Double courseDstLat, int courseDayIdx, String courseDate) {
+        this.travelItemId = travelItemId;
         this.courseStAdd = courseStAdd;
         this.courseStLng = courseStLng;
         this.courseStLat = courseStLat;
@@ -65,11 +64,24 @@ public class CourseItem {
         this.courseDate = courseDate;
     }
 
-    public String getCourseDayIdx() {
+    public CourseItem(String travelItemId, String courseStAdd, Double courseStLng, Double courseStLat,  String courseDstAdd, Double courseDstLng, Double courseDstLat, int courseDayIdx, String courseDate, String courseItemId) {
+        this.travelItemId = travelItemId;
+        this.courseStAdd = courseStAdd;
+        this.courseStLng = courseStLng;
+        this.courseStLat = courseStLat;
+        this.courseDstAdd = courseDstAdd;
+        this.courseDstLng = courseDstLng;
+        this.courseDstLat = courseDstLat;
+        this.courseDayIdx = courseDayIdx;
+        this.courseDate = courseDate;
+        this.courseItemId = courseItemId;
+    }
+
+    public int getCourseDayIdx() {
         return courseDayIdx;
     }
 
-    public void setCourseDayIdx(String courseDayIdx) {
+    public void setCourseDayIdx(int courseDayIdx) {
         this.courseDayIdx = courseDayIdx;
     }
 
@@ -81,12 +93,20 @@ public class CourseItem {
         this.courseDate = courseDate;
     }
 
+    public String getTravelItemId() {
+        return travelItemId;
+    }
+
+    public void setTravelItemId(String travelItemId) {
+        travelItemId = travelItemId;
+    }
+
     public String getCourseItemId() {
-        return CourseItemId;
+        return courseItemId;
     }
 
     public void setCourseItemId(String courseItemId) {
-        CourseItemId = courseItemId;
+        this.courseItemId = courseItemId;
     }
 
     public String getCourseStTitle() {
@@ -153,11 +173,4 @@ public class CourseItem {
         this.courseDstLat = courseDstLat;
     }
 
-    public HashMap<String, PoiItem> getPoiItemHashMap() {
-        return poiItemHashMap;
-    }
-
-    public void setPoiItemHashMap(HashMap<String, PoiItem> poiItemHashMap) {
-        this.poiItemHashMap = poiItemHashMap;
-    }
 }

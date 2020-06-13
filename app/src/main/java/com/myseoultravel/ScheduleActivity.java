@@ -152,7 +152,7 @@ public class ScheduleActivity extends AppCompatActivity {
                                     scheduleAdapter.notifyDataSetChanged();
                                     Log.d("myTag", "Schedule: DocumentSnapshot successfully updated!");
 
-                                    CourseItem courseItem = new CourseItem(travelId+" "+String.valueOf(pos),add,lng,lat,add,lng,lat,scheduleHashMap.get(String.valueOf(pos)).getScheduleDayIdx(),scheduleHashMap.get(String.valueOf(pos)).getScheduleDate());
+                                    CourseItem courseItem = new CourseItem(travelId,add,lng,lat,add,lng,lat,scheduleHashMap.get(String.valueOf(pos)).getScheduleDayIdx(),scheduleHashMap.get(String.valueOf(pos)).getScheduleDate(),travelId+"_"+pos);
                                     db.collection("course").document(travelId+"_"+pos)
                                             .set(courseItem)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {

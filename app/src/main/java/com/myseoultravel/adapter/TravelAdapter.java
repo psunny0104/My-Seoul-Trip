@@ -18,6 +18,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 import com.myseoultravel.CourseActivity;
 import com.myseoultravel.HomeActivity;
 import com.myseoultravel.R;
@@ -72,7 +74,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
     @Override
     public void onBindViewHolder(@NonNull TravelViewHolder viewholder, int position) {
 
-        viewholder.travelIdx.setText(mList.get(position).getTravelIdx());
+        viewholder.travelIdx.setText("Travel "+mList.get(position).getTravelIdx());
         viewholder.travelStartDate.setText(mList.get(position).getTravelStartDate());
         viewholder.travelEndDate.setText(mList.get(position).getTravelEndDate());
         viewholder.travelDel.setTag(viewholder.getAdapterPosition());
@@ -89,11 +91,49 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
                             public void onClick(DialogInterface dialog, int which) {
                                 Log.d("myTag", "Home: Document was delete");
                                 db.collection("travel").document(mList.get(pos).getTravelId())
-                                        .delete();
+                                        .delete()
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                db.collection("course").whereEqualTo("travelItemId",mList.get(pos).getTravelId())
+                                                        .get()
+                                                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                            @Override
+                                                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                                WriteBatch batch = db.batch();
+                                                                for(int i = 0 ; i<queryDocumentSnapshots.size(); i++){
+                                                                    DocumentReference documentReference = queryDocumentSnapshots.getDocuments().get(i).getReference();
+                                                                    batch.delete(documentReference);
+                                                                }
+                                                                batch.commit();
+                                                            }
+                                                        });
+                                                db.collection("poi").whereEqualTo("travelItemId",mList.get(pos).getTravelId())
+                                                        .get()
+                                                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                            @Override
+                                                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                                WriteBatch batch = db.batch();
+                                                                for(int i = 0 ; i<queryDocumentSnapshots.size(); i++){
+                                                                    DocumentReference documentReference = queryDocumentSnapshots.getDocuments().get(i).getReference();
+                                                                    batch.delete(documentReference);
+                                                                }
+                                                                batch.commit();
+                                                            }
+                                                        });
 
-                                Intent intent = new Intent(v.getContext(), HomeActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                v.getContext().startActivity(intent);
+
+                                                Intent intent = new Intent(v.getContext(), HomeActivity.class);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                v.getContext().startActivity(intent);
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+
+                                            }
+                                        });
                             }
                         });
                 builder.setNegativeButton("No",

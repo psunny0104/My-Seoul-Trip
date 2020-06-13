@@ -20,17 +20,14 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.myseoultravel.CourseActivity;
-import com.myseoultravel.HomeActivity;
 import com.myseoultravel.R;
 import com.myseoultravel.SearchDetailActivity;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
-    private HashMap<String, PoiItem> mList;
+    private ArrayList<PoiItem> mList;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public class CourseViewHolder extends RecyclerView.ViewHolder{
@@ -51,7 +48,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         }
     }
 
-    public CourseAdapter(HashMap<String, PoiItem> list){this.mList = list;}
+    public CourseAdapter(ArrayList<PoiItem> list){this.mList = list;}
 
     @NonNull
     @Override
@@ -66,17 +63,17 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
-        holder.poiTitle.setText(mList.get(String.valueOf(position)).getPoiTitle());
-        holder.poiAddress.setText(mList.get(String.valueOf(position)).getPoiAddress());
-        getImageByGlide(mList.get(String.valueOf(position)).getPoiImage(),holder.poiImage);
+        holder.poiTitle.setText(mList.get(position).getPoiTitle());
+        holder.poiAddress.setText(mList.get(position).getPoiAddress());
+        getImageByGlide(mList.get(position).getPoiImage(),holder.poiImage);
 
         holder.poiInfo.setTag(holder.getAdapterPosition());
         holder.poiInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), SearchDetailActivity.class);
-                intent.putExtra("contentId", mList.get(String.valueOf(position)).getPoiContentId());
-                intent.putExtra("contentTypeId", mList.get(String.valueOf(position)).getPoiContentTypeId());
+                intent.putExtra("contentId", mList.get(position).getPoiContentId());
+                intent.putExtra("contentTypeId", mList.get(position).getPoiContentTypeId());
                 intent.putExtra("api","tour");
                 v.getContext().startActivity(intent);
             }
@@ -95,26 +92,32 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                 builder.setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                String tmp = mList.get(String.valueOf(pos)).getCourseItemId();
-                                db.collection("course").document(mList.get(String.valueOf(pos)).getCourseItemId())
-                                        .update("poiItemHashMap."+pos, FieldValue.delete())
+                                db.collection("poi").document(mList.get(pos).getCourseItemId()+"_"+mList.get(pos).getPoiIdx())
+                                        .delete()
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 Log.d("myTag", "Course: Document was delete");
-                                                Intent intent = new Intent(v.getContext(), CourseActivity.class);
-                                                intent.putExtra("courseId",mList.get(String.valueOf(pos)).getCourseItemId());
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                v.getContext().startActivity(intent);
+                                                //updating
+
+                                                int size = mList.size();
+                                                Log.i("myTag","Course: mList size - "+size);
+                                                mList.remove(pos);
+                                                Log.i("myTag","Course: mList size - "+size);
+                                                notifyItemRemoved(pos);
+                                                notifyItemChanged(pos,mList.size());
+//                                                Intent intent = new Intent(v.getContext(), CourseItem.class);
+//                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                                                v.getContext().startActivity(intent);
+
                                             }
-                                        }).addOnFailureListener(new OnFailureListener() {
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
                                                 Log.e("myTag", "Course: Error delete document", e);
                                             }
                                         });
-
-
                             }
                         });
                 builder.setNegativeButton("No",

@@ -3,7 +3,7 @@ package com.myseoultravel.adapter;
 import java.io.Serializable;
 
 public class ScheduleItem implements Serializable {
-    private String scheduleDayIdx;
+    private int scheduleDayIdx;
     private String scheduleDate;
     private String scheduleSt;
     private String scheduleDst;
@@ -17,27 +17,27 @@ public class ScheduleItem implements Serializable {
 
     public ScheduleItem(){};
 
-    public ScheduleItem(String scheduleDayIdx, String scheduleDate) {
+    public ScheduleItem(int scheduleDayIdx, String scheduleDate) {
         this.scheduleDayIdx = scheduleDayIdx;
         this.scheduleDate = scheduleDate;
         this.scheduleSt = "";
         this.scheduleDst = "";
     }
 
-    public ScheduleItem(String scheduleDayIdx, String scheduleDate, String scheduleCourseId) {
+    public ScheduleItem(int scheduleDayIdx, String scheduleDate, String scheduleCourseId) {
         this.scheduleDayIdx = scheduleDayIdx;
         this.scheduleDate = scheduleDate;
         this.scheduleCourseId = scheduleCourseId;
     }
 
-    public ScheduleItem(String scheduleDayIdx, String scheduleDate, String scheduleSt, String scheduleDst) {
+    public ScheduleItem(int scheduleDayIdx, String scheduleDate, String scheduleSt, String scheduleDst) {
         this.scheduleDayIdx = scheduleDayIdx;
         this.scheduleDate = scheduleDate;
         this.scheduleSt = scheduleSt;
         this.scheduleDst = scheduleDst;
     }
 
-    public ScheduleItem(String scheduleDayIdx, String scheduleDate, String scheduleSt, String scheduleDst, String scheduleCourseId) {
+    public ScheduleItem(int scheduleDayIdx, String scheduleDate, String scheduleSt, String scheduleDst, String scheduleCourseId) {
         this.scheduleDayIdx = scheduleDayIdx;
         this.scheduleDate = scheduleDate;
         this.scheduleSt = scheduleSt;
@@ -86,11 +86,11 @@ public class ScheduleItem implements Serializable {
         this.scheduleCourseId = scheduleCourseId;
     }
 
-    public String getScheduleDayIdx() {
+    public int getScheduleDayIdx() {
         return scheduleDayIdx;
     }
 
-    public void setScheduleDayIdx(String scheduleDayIdx) {
+    public void setScheduleDayIdx(int scheduleDayIdx) {
         this.scheduleDayIdx = scheduleDayIdx;
     }
 

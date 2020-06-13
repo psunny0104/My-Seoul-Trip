@@ -81,7 +81,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         viewholder.scheduleDayIdx.setGravity(Gravity.CENTER);
         viewholder.scheduleDate.setGravity(Gravity.CENTER);
 
-        viewholder.scheduleDayIdx.setText(mList.get(String.valueOf(position)).getScheduleDayIdx());
+        viewholder.scheduleDayIdx.setText("Day "+mList.get(String.valueOf(position)).getScheduleDayIdx());
         viewholder.scheduleDate.setText(mList.get(String.valueOf(position)).getScheduleDate());
 
         viewholder.scheduleSt.setText(mList.get(String.valueOf(position)).getScheduleSt());

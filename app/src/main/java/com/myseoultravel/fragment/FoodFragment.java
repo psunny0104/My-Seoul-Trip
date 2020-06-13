@@ -90,6 +90,7 @@ public class FoodFragment extends Fragment {
                         intent.putExtra("api","tour");
                         intent.putExtra("pos",oldIntent.getIntExtra("pos",0));
                         intent.putExtra("courseId",oldIntent.getStringExtra("courseId"));
+                        intent.putExtra("poiCount",oldIntent.getIntExtra("poiCount",0));
                         Log.i("myTag", localList.getResponse().getBody().getItems().getItem().get(position).toContetIdString());
                         intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
                         startActivity(intent);
