@@ -1,1 +1,1 @@
-mySeoulTravel
+mySeoulTrip
