@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">MySeoulTravel</string>
+    <string name="app_name">MySeoulTrip</string>
     <string name="slogan_one">MAKE YOUR OWN</string>
     <string name="slogan_two">SEOUL TRAVEL ROUTE</string>
     <string name="slogan_three">WITH METRO AND FOOT</string>
     <string name="title_activity_bottom_nav">BottomNavActivity</string>
     <string name="title_home">Home</string>
-    <string name="home_toolbar_title">My Seoul Travel</string>
+    <string name="home_toolbar_title">My Seoul Trip</string>
 
     <string name="making_slogan_one">MAKE YOUR OWN</string>
     <string name="making_slogan_two">SEOUL TRAVEL ROUTE!</string>

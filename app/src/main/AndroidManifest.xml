@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
-    package="com.myseoultravel">
+    package="com.myseoultrip">
 
     <dist:module dist:instant="true" />
 
@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CourseActivity"></activity>
+        <activity android:name=".MakingCourseActivity"/>
+        <activity android:name=".CourseActivity" />
         <activity android:name=".GeoPopActivity" />
         <activity android:name=".ScheduleActivity" />
         <activity android:name=".HomeActivity" />

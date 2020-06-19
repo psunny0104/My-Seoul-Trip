@@ -3,34 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="250dp">
 
 
     <ImageButton
         android:id="@+id/area_image"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
+        style="@android:style/Widget.Material.ImageButton"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/area_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:background="@color/seoulRed"
+        android:gravity="center"
         android:text="TextView"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:textColor="@android:color/white"
+        android:textSize="18dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/area_image"
-        app:layout_constraintHorizontal_bias="0.948"
-        app:layout_constraintStart_toStartOf="@+id/area_image"
-        app:layout_constraintTop_toTopOf="@+id/area_image"
-        app:layout_constraintVertical_bias="0.815" />
+        app:layout_constraintBottom_toBottomOf="@id/area_image"
+        app:layout_constraintEnd_toEndOf="@id/area_image"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="@id/area_image"
+        app:layout_constraintTop_toTopOf="@id/area_image"
+        app:layout_constraintVertical_bias=".1" />
 </androidx.constraintlayout.widget.ConstraintLayout>

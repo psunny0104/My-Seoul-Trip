@@ -42,6 +42,43 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76428070022:android:6f9b8dfab84b9dacd95507",
+        "android_client_info": {
+          "package_name": "com.myseoultrip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "76428070022-c9g56mods5go58s2cphon0mp49fqic8b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.myseoultrip",
+            "certificate_hash": "6ea56cbee33c2ce17fb2c2a6d5b74d48c86ffc92"
+          }
+        },
+        {
+          "client_id": "76428070022-u23gtjcqqssslk6ebvmnvh216qifse0s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChTPWSLD1dK4-pG4v9_zgTAg9mdzeShZM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "76428070022-u23gtjcqqssslk6ebvmnvh216qifse0s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
