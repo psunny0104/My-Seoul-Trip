@@ -1,4 +1,4 @@
-package com.myseoultavel.fragment;
+package com.myseoultrip.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,13 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.myseoultrip.R;
-import com.myseoultavel.SearchDetailActivity;
-import com.myseoultavel.adapter.SearchNearbyItem;
-import com.myseoultavel.adapter.SearchNearbyItemAdapter;
-import com.myseoultavel.model.place.tour.LocalListModelItems;
-import com.myseoultavel.service.ApiCallback;
-import com.myseoultavel.service.TourApiClient;
-import com.myseoultavel.service.TourApiService;
+import com.myseoultrip.SearchDetailActivity;
+import com.myseoultrip.adapter.SearchNearbyItem;
+import com.myseoultrip.adapter.SearchNearbyItemAdapter;
+import com.myseoultrip.model.place.tour.LocalListModelItems;
+import com.myseoultrip.service.ApiCallback;
+import com.myseoultrip.service.TourApiClient;
+import com.myseoultrip.service.TourApiService;
 
 import org.json.JSONException;
 
@@ -40,9 +40,9 @@ public class ExperienceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_food, container, false);
+        View view = inflater.inflate(R.layout.fragment_experience, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.search_nearby_place_food_recycler_view);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.search_nearby_place_exp_recycler_view);
         recyclerView.setHasFixedSize(true);
 
         ArrayList<SearchNearbyItem> searchNearbyItems = new ArrayList<>();
@@ -53,7 +53,7 @@ public class ExperienceFragment extends Fragment {
 
         double mapX = getActivity().getIntent().getDoubleExtra("mapX",0.0);
         double mapY = getActivity().getIntent().getDoubleExtra("mapY",0.0);
-        tourApiClient.getLocationList(TourApiService.SERVICE_KEY, TourApiService.MOBILE_OS, TourApiService.MOBILE_App, TourApiService.MY_TYPE, 30, 1, "P", 75, mapX, mapY, 4000, new ApiCallback<LocalListModelItems>() {
+        tourApiClient.getLocationList(TourApiService.SERVICE_KEY, TourApiService.MOBILE_OS, TourApiService.MOBILE_App, TourApiService.MY_TYPE, 30, 1, "P", 85, mapX, mapY, 4000, new ApiCallback<LocalListModelItems>() {
             @Override
             public void onError(Throwable t) {
                 Log.e("myTag", t.toString());

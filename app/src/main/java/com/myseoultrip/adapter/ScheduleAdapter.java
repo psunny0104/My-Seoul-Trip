@@ -1,4 +1,4 @@
-package com.myseoultavel.adapter;
+package com.myseoultrip.adapter;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -14,9 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.myseoultavel.CourseActivity;
-import com.myseoultavel.GeoPopActivity;
-import com.myseoultavel.R;
+import com.myseoultrip.CourseActivity;
+import com.myseoultrip.GeoPopActivity;
+import com.myseoultrip.R;
+import com.myseoultrip.adapter.ScheduleItem;
 
 
 import java.util.HashMap;
@@ -138,6 +139,11 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
                 }
                 else{
                    //TODO: Travel Activity
+                    Intent newIntent = new Intent(v.getContext(), com.myseoultrip.MakingCourseActivity.class);
+                    newIntent.putExtra("pos",pos);
+                    newIntent.putExtra("courseId",mList.get(String.valueOf(pos)).getScheduleCourseId()+"_"+pos);
+                    newIntent.putExtra("travelId",mList.get(String.valueOf(pos)).getScheduleCourseId());
+                    v.getContext().startActivity(newIntent);
                 }
             }
         });

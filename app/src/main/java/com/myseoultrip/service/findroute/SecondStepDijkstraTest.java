@@ -6,7 +6,7 @@ import java.util.Map;
 
 import static com.myseoultrip.SplashActivity.subwayCoords;
 
-public class SecondStepDijkstra {
+public class SecondStepDijkstraTest {
     static int[][] ad;
     static int[] dist;
     static boolean[] visit;

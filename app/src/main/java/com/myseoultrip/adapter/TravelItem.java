@@ -1,4 +1,6 @@
-package com.myseoultavel.adapter;
+package com.myseoultrip.adapter;
+
+import com.myseoultrip.adapter.ScheduleItem;
 
 import java.util.HashMap;
 

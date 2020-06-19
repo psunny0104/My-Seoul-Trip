@@ -1,4 +1,4 @@
-package com.myseoultravel.adapter;
+package com.myseoultrip.adapter;
 import java.io.Serializable;
 import java.util.Date;
 

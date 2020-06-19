@@ -1,7 +1,8 @@
-package com.myseoultravel.adapter;
+package com.myseoultrip.adapter;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +22,10 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.myseoultravel.CourseActivity;
+import com.myseoultrip.CourseActivity;
 
-import com.myseoultravel.SearchDetailActivity;
 import com.myseoultrip.R;
+import com.myseoultrip.SearchDetailActivity;
 
 import java.util.ArrayList;
 
@@ -67,6 +68,11 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
         holder.poiTitle.setText(mList.get(position).getPoiTitle());
+        holder.poiTitle.setHorizontallyScrolling(true);
+        holder.poiTitle.setSingleLine(true);
+        holder.poiTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        holder.poiTitle.setSelected(true);
+        holder.poiTitle.setMarqueeRepeatLimit(-1);
         holder.poiAddress.setText(mList.get(position).getPoiAddress());
         getImageByGlide(mList.get(position).getPoiImage(),holder.poiImage);
 
@@ -95,7 +101,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                 builder.setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                db.collection("poi").document(mList.get(pos).getCourseItemId()+"_"+mList.get(pos).getPoiIdx())
+                                db.collection("poi").document(mList.get(pos).getCourseItemId()+"_"+(mList.get(pos).getPoiIdx()))
                                         .delete()
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
@@ -106,7 +112,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
                                                 Intent intent = new Intent(v.getContext(), CourseActivity.class);
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                                 intent.putExtra("courseId",mList.get(pos).getTravelItemId());
-                                                intent.putExtra("pos",String.valueOf(mList.get(pos).getCourseItemId().substring(mList.get(pos).getCourseItemId().length()-1 ,mList.get(pos).getCourseItemId().length())));
+                                                intent.putExtra("pos",Integer.parseInt(mList.get(pos).getCourseItemId().substring(mList.get(pos).getCourseItemId().length()-1, mList.get(pos).getCourseItemId().length())));
 
                                                 int size = mList.size();
                                                 Log.i("myTag","Course: mList size - "+size);
@@ -114,10 +120,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
                                                 Log.i("myTag","Course: mList size - "+size);
                                                 notifyItemRemoved(pos);
-                                                notifyItemChanged(pos,mList.size());
+                                                notifyItemChanged(pos, mList.size());
 
-
-                                                v.getContext().startActivity(intent);
+                                                //v.getContext().startActivity(intent);
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {

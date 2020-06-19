@@ -1,4 +1,4 @@
-package com.myseoultavel.fragment;
+package com.myseoultrip.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,13 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.myseoultrip.R;
-import com.myseoultavel.SearchDetailActivity;
-import com.myseoultavel.adapter.SearchNearbyItem;
-import com.myseoultavel.adapter.SearchNearbyItemAdapter;
-import com.myseoultavel.model.place.tour.LocalListModelItems;
-import com.myseoultavel.service.ApiCallback;
-import com.myseoultavel.service.TourApiClient;
-import com.myseoultavel.service.TourApiService;
+import com.myseoultrip.SearchDetailActivity;
+import com.myseoultrip.adapter.SearchNearbyItem;
+import com.myseoultrip.adapter.SearchNearbyItemAdapter;
+import com.myseoultrip.model.place.tour.LocalListModelItems;
+import com.myseoultrip.service.ApiCallback;
+import com.myseoultrip.service.TourApiClient;
+import com.myseoultrip.service.TourApiService;
 
 import org.json.JSONException;
 

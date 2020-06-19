@@ -1,4 +1,4 @@
-package com.myseoultavel.adapter;
+package com.myseoultrip.adapter;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,9 +19,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
-import com.myseoultavel.HomeActivity;
+import com.myseoultrip.HomeActivity;
 import com.myseoultrip.R;
-import com.myseoultavel.ScheduleActivity;
+import com.myseoultrip.ScheduleActivity;
 
 import java.util.ArrayList;
 
@@ -68,7 +68,7 @@ public class TravelAdapter extends RecyclerView.Adapter<TravelAdapter.TravelView
     @Override
     public void onBindViewHolder(@NonNull TravelViewHolder viewholder, int position) {
 
-        viewholder.travelIdx.setText("Travel "+mList.get(position).getTravelIdx());
+        viewholder.travelIdx.setText("Trip "+mList.get(position).getTravelIdx());
         viewholder.travelStartDate.setText(mList.get(position).getTravelStartDate());
         viewholder.travelEndDate.setText(mList.get(position).getTravelEndDate());
         viewholder.travelDel.setTag(viewholder.getAdapterPosition());

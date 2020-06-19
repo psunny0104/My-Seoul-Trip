@@ -1,4 +1,4 @@
-package com.myseoultavel.adapter;
+package com.myseoultrip.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.myseoultrip.R;
+import com.myseoultrip.adapter.SearchNearbyItem;
 
 import java.util.ArrayList;
 

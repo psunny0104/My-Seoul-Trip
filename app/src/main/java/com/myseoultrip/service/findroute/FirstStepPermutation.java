@@ -28,10 +28,10 @@ public class FirstStepPermutation {
     public static void print(int[] arr, int r) {
         itemList = new ArrayList<Integer>();
         for (int i = 0; i < r; i++){
-            System.out.print(arr[i] + " ");
+          //  System.out.print(arr[i] + " ");
             itemList.add(arr[i]);
         }
         permList.add(itemList);
-        System.out.println();
+    //    System.out.println();
     }
 }

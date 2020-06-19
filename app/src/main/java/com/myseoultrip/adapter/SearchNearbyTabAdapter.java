@@ -1,18 +1,19 @@
-package com.myseoultravel.adapter;
+package com.myseoultrip.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.myseoultravel.fragment.CultureFragment;
-import com.myseoultravel.fragment.ExperienceFragment;
-import com.myseoultravel.fragment.FoodFragment;
-import com.myseoultravel.fragment.ShoppingFragment;
+import com.myseoultrip.fragment.CultureFragment;
+import com.myseoultrip.fragment.ExperienceFragment;
+import com.myseoultrip.fragment.FoodFragment;
+import com.myseoultrip.fragment.ShoppingFragment;
+import com.myseoultrip.fragment.ToursiteFragment;
 
 public class SearchNearbyTabAdapter extends androidx.fragment.app.FragmentPagerAdapter {
 
-    final int PAGE_COUNT = 4;
-    private String tabTitles[] = new String[] {"SHOPPING", "FOOD", "CULTURE", "EXPERIENCE"};
+    final int PAGE_COUNT = 5;
+    private String tabTitles[] = new String[] {"STORE", "FOOD","HIS/NAT", "CULTURE", "EXP"};
 
     int mNumOfTabs;
     public SearchNearbyTabAdapter(@NonNull FragmentManager fm) {
@@ -31,9 +32,12 @@ public class SearchNearbyTabAdapter extends androidx.fragment.app.FragmentPagerA
                 FoodFragment foodFragment = new FoodFragment();
                 return foodFragment;
             case 2:
+                ToursiteFragment toursiteFragment = new ToursiteFragment();
+                return toursiteFragment;
+            case 3:
                 CultureFragment cultureFragment = new CultureFragment();
                 return cultureFragment;
-            case 3:
+            case 4:
                 ExperienceFragment experienceFragment = new ExperienceFragment();
                 return experienceFragment;
             default:

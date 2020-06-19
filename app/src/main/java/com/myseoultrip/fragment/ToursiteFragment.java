@@ -3,15 +3,14 @@ package com.myseoultrip.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.myseoultrip.R;
 import com.myseoultrip.SearchDetailActivity;
@@ -28,11 +27,11 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CultureFragment#newInstance} factory method to
+ * Use the {@link ToursiteFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CultureFragment extends Fragment {
-    public CultureFragment() {
+public class ToursiteFragment extends Fragment {
+    public ToursiteFragment() {
         // Required empty public constructor
     }
 
@@ -40,9 +39,9 @@ public class CultureFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_food, container, false);
+        View view = inflater.inflate(R.layout.fragment_toursite, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.search_nearby_place_food_recycler_view);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.search_nearby_place_tour_site_recycler_view);
         recyclerView.setHasFixedSize(true);
 
         ArrayList<SearchNearbyItem> searchNearbyItems = new ArrayList<>();
@@ -53,7 +52,7 @@ public class CultureFragment extends Fragment {
 
         double mapX = getActivity().getIntent().getDoubleExtra("mapX",0.0);
         double mapY = getActivity().getIntent().getDoubleExtra("mapY",0.0);
-        tourApiClient.getLocationList(TourApiService.SERVICE_KEY, TourApiService.MOBILE_OS, TourApiService.MOBILE_App, TourApiService.MY_TYPE, 30, 1, "P", 76, mapX, mapY, 3000, new ApiCallback<LocalListModelItems>() {
+        tourApiClient.getLocationList(TourApiService.SERVICE_KEY, TourApiService.MOBILE_OS, TourApiService.MOBILE_App, TourApiService.MY_TYPE, 30, 1, "P", 76, mapX, mapY, 4000, new ApiCallback<LocalListModelItems>() {
             @Override
             public void onError(Throwable t) {
                 Log.e("myTag", t.toString());

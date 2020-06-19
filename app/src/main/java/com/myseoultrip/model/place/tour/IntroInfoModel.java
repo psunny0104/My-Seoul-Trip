@@ -337,9 +337,40 @@ public class IntroInfoModel {
         @Expose
         public String treatmenu; //취급메뉴
 
-        public Integer getContentid() {
-            return contentid;
-        }
+
+        //레포츠
+
+
+        //쇼핑
+        @SerializedName("infocentershopping")
+        @Expose
+        private String infocentershopping;
+        @SerializedName("opendateshopping")
+        @Expose
+        private String opendateshopping;
+        @SerializedName("opentime")
+        @Expose
+        private String opentime;
+        @SerializedName("parkingshopping")
+        @Expose
+        private String parkingshopping;
+        @SerializedName("restdateshopping")
+        @Expose
+        private String restdateshopping;
+        @SerializedName("restroom")
+        @Expose
+        private String restroom;
+        @SerializedName("saleitem")
+        @Expose
+        private String saleitem;
+        @SerializedName("scaleshopping")
+        @Expose
+        private String scaleshopping;
+        @SerializedName("shopguide")
+        @Expose
+        private String shopguide;
+
+
 
         public void setContentid(Integer contentid) {
             this.contentid = contentid;

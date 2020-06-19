@@ -1,4 +1,4 @@
-package com.myseoultravel.adapter;
+package com.myseoultrip.adapter;
 
 public class CourseItem {
     private String travelItemId;

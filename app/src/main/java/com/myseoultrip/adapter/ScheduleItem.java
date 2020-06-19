@@ -1,4 +1,4 @@
-package com.myseoultavel.adapter;
+package com.myseoultrip.adapter;
 
 import java.io.Serializable;
 

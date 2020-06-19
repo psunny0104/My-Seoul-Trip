@@ -1,4 +1,4 @@
-package com.myseoultavel.adapter;
+package com.myseoultrip.adapter;
 
 import com.myseoultrip.R;
 
@@ -11,11 +11,11 @@ public class SelectAreaData {
         //item 넣기
         ArrayList items = new ArrayList<SelectAreaItem>();
 
-        items.add(new SelectAreaItem(R.drawable.a, "명동/남대문"));
-        items.add(new SelectAreaItem(R.drawable.b, "동대문"));
-        items.add(new SelectAreaItem(R.drawable.c, "신촌/홍대"));
-        items.add(new SelectAreaItem(R.drawable.d, "강남"));
-        items.add(new SelectAreaItem(R.drawable.e, "이태원"));
+        items.add(new SelectAreaItem(R.drawable.img_myeongdong, "Myeong-dong(명동)/Namdaemun(남대문)"));
+        items.add(new SelectAreaItem(R.drawable.img_dongdaemun, "Dongdaemun(동대문)"));
+        items.add(new SelectAreaItem(R.drawable.img_sinchon, "Sinchon(신촌)/홍대(Hongdae)"));
+        items.add(new SelectAreaItem(R.drawable.img_gangnam, "Gangnam(강남)"));
+        items.add(new SelectAreaItem(R.drawable.img_itaewon, "Itaewon(이태원)"));
 
         return items;
     }
